@@ -1,5 +1,5 @@
 package com.keepitup.MagJobBackend.user.dto;
 
-public class PutUserRequest {
+public class PostUserRequest {
 
 }
