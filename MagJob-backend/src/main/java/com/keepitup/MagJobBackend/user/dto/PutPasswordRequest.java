@@ -1,9 +1,6 @@
 package com.keepitup.MagJobBackend.user.dto;
 
 import lombok.*;
-
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Builder
@@ -11,13 +8,8 @@ import java.time.LocalDate;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class PostUserRequest {
+public class PutPasswordRequest {
 
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
     private String password;
 
-    private LocalDate birthDate;
 }
