@@ -1,0 +1,18 @@
+<div class="loginPage">
+  <div class="logo">Mag<br>Job</div>
+  <div class="mainContainer">
+    <form class="loginForm" [formGroup]="loginForm" (submit)="submitApplication()">
+
+      <div class="loginTitle">Login</div>
+
+      <label for="email" class="Email">Email</label>
+      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"
+        formControlName="email" />
+
+      <label class="Password">Password</label>
+      <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" />
+
+      <button class="confirmButton">Login</button>
+    </form>
+  </div>
+</div>

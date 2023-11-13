@@ -1,1 +1,84 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+code {
+    color: #e01a76;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+html,
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: var(--Background, linear-gradient(90deg, rgba(6, 20, 27, 0.50) 0%, #06141B 22.92%, #06141B 76.05%, rgba(6, 20, 27, 0.50) 100%), #000);
+}
+
+app-footer {
+    display: flex;
+    height: 20px;
+    width: 100vh;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-top: 10px;
+}
+
+app-nav-menu {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0px 20px;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+
+    background: var(--Color-2, #11212D);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 20px 20px;
+}
+
+input {
+    min-width: 373px;
+    min-height: 47px;
+    flex-shrink: 0;
+
+    border-radius: 15px;
+    background: var(--White, #FFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+label {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    justify-content: center;
+
+    color: var(--White, #FFF);
+
+    /* Name of forms controls */
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
