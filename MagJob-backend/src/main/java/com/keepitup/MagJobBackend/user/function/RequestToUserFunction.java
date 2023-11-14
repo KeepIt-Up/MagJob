@@ -2,11 +2,12 @@ package com.keepitup.MagJobBackend.user.function;
 
 import com.keepitup.MagJobBackend.user.dto.PostUserRequest;
 import com.keepitup.MagJobBackend.user.entity.User;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 
 import java.util.function.BiFunction;
-
+@Component
 public class RequestToUserFunction implements BiFunction<BigInteger, PostUserRequest, User> {
 
     @Override
@@ -18,7 +19,7 @@ public class RequestToUserFunction implements BiFunction<BigInteger, PostUserReq
                 .lastName(request.getLastName())
                 .phoneNumber(request.getPhoneNumber())
                 .password(request.getPassword())
-                .phoneNumber(request.getPhoneNumber())
+                .birthDate(request.getBirthDate())
                 .build();
     }
 }
