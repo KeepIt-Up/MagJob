@@ -26,7 +26,7 @@ public interface UserController {
             BigInteger id
     );
 
-    @PostMapping("/api/users")
+    @PostMapping("/api/users/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     void createUser(
