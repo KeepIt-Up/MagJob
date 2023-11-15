@@ -2,9 +2,10 @@ package com.keepitup.MagJobBackend.user.function;
 
 import com.keepitup.MagJobBackend.user.dto.PatchUserRequest;
 import com.keepitup.MagJobBackend.user.entity.User;
+import org.springframework.stereotype.Component;
 
 import java.util.function.BiFunction;
-
+@Component
 public class UpdateUserWithRequestFunction implements BiFunction<User, PatchUserRequest, User> {
 
     @Override
