@@ -1,16 +1,11 @@
 package com.keepitup.MagJobBackend.user.controller.impl;
 
-import com.keepitup.MagJobBackend.user.dto.*;
-import com.keepitup.MagJobBackend.user.function.RequestToUserFunction;
-import com.keepitup.MagJobBackend.user.function.UserToResponseFunction;
-import com.keepitup.MagJobBackend.user.function.UsersToResponseFunction;
-import com.keepitup.MagJobBackend.user.function.UpdateUserPasswordWithRequestFunction;
-import com.keepitup.MagJobBackend.user.function.UpdateUserWithRequestFunction;
-import com.keepitup.MagJobBackend.user.service.api.UserService;
 import com.keepitup.MagJobBackend.user.controller.api.UserController;
+import com.keepitup.MagJobBackend.user.dto.*;
 import com.keepitup.MagJobBackend.user.entity.User;
+import com.keepitup.MagJobBackend.user.function.*;
+import com.keepitup.MagJobBackend.user.service.api.UserService;
 import lombok.extern.java.Log;
-import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,8 +53,16 @@ public class UserDefaultController implements UserController {
     }
 
     @Override
-    public void createUser(BigInteger id, PostUserRequest postUserRequest) {
-        service.register(requestToUser.apply(id, postUserRequest));
+    public void login(LoginUserRequest loginUserRequest) {
+        if (service.authenticate(loginUserRequest.getEmail(), loginUserRequest.getPassword())) {
+            return;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public void createUser(PostUserRequest postUserRequest) {
+        service.register(requestToUser.apply(postUserRequest));
     }
 
     @Override

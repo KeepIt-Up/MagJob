@@ -9,11 +9,9 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class PostUserRequest {
+public class LoginUserRequest {
 
     private String email;
-    private String firstName;
-    private String lastName;
     private String password;
 
 }

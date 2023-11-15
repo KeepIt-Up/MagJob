@@ -1,10 +1,6 @@
 package com.keepitup.MagJobBackend.user.controller.api;
 
-import com.keepitup.MagJobBackend.user.dto.GetUsersResponse;
-import com.keepitup.MagJobBackend.user.dto.GetUserResponse;
-import com.keepitup.MagJobBackend.user.dto.PatchUserRequest;
-import com.keepitup.MagJobBackend.user.dto.PostUserRequest;
-import com.keepitup.MagJobBackend.user.dto.PutPasswordRequest;
+import com.keepitup.MagJobBackend.user.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +22,18 @@ public interface UserController {
             BigInteger id
     );
 
-    @PostMapping("/api/users/{id}")
+    @PostMapping("/api/users/login")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    void login(
+            @RequestBody
+            LoginUserRequest loginUserRequest
+    );
+
+    @PostMapping("/api/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     void createUser(
-            @PathVariable("id")
-            BigInteger id,
             @RequestBody
             PostUserRequest postUserRequest
     );
