@@ -1,25 +1,25 @@
 <div class="registerPage">
   <div class="Logo">Mag<br>Job</div>
   <div class="mainContainer">
-    <form class="registerForm" [formGroup]="registerForm" (submit)="submitApplication()">
+    <form class="registerForm" [formGroup]="registerForm" (submit)="onSubmit()">
   
         <div class="registerTitle">Register</div>
         
         <label for="email" class="Email">Email</label>
         <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"
-        formControlName="email"/>
+        formControlName="email" [(ngModel)]="registerModel.email" required/>
   
         <label class="Password">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password"/>
+        <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" [(ngModel)]="registerModel.password" required/>
   
         <label for="passwordConfirmation" class="RepeatPassword">Repeat Password</label>
         <input type="password" class="form-control" id="passwordConfirmation" placeholder="Repeat Password" formControlName="passwordConfirmation" />
   
         <label class="Firstname">Firstname</label>
-        <input type="text" class="form-control" id="firstname" placeholder="Your Firstname" formControlName="firstname"/>
+        <input type="text" class="form-control" id="firstname" placeholder="Your Firstname" formControlName="firstname" [(ngModel)]="registerModel.firstname" required/>
   
         <label class="Lastname">Lastname</label>
-        <input type="text" class="form-control" id="surname" placeholder="Your Lastname" formControlName="surname"/>
+        <input type="text" class="form-control" id="surname" placeholder="Your Lastname" formControlName="surname" [(ngModel)]="registerModel.lastname" required/>
   
         <button class="confirmButton">Register</button>
       </form>

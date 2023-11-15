@@ -1,16 +1,16 @@
 <div class="loginPage">
   <div class="logo">Mag<br>Job</div>
   <div class="mainContainer">
-    <form class="loginForm" [formGroup]="loginForm" (submit)="submitApplication()">
+    <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="submitApplication()">
 
       <div class="loginTitle">Login</div>
 
       <label for="email" class="Email">Email</label>
       <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"
-        formControlName="email" />
+        formControlName="email" [(ngModel)]="loginModel.email" required minlength="3"/>
 
       <label class="Password">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" />
+      <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" [(ngModel)]="loginModel.password" required/>
 
       <button class="confirmButton">Login</button>
     </form>
