@@ -1,7 +1,7 @@
 import { LoginService } from '../service/login.service';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Login } from '../model/login';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({

@@ -8,14 +8,14 @@ import { Login } from '../model/login'
 })
 export class LoginService {
 
-  readonly apiUrl = 'your_backend_api_url';
+  readonly apiUrl = '/api/users';
 
   constructor(private http: HttpClient) { }
 
   login(loginData: Login): Observable<any> {
-   
+
     const loginEndpoint = `${this.apiUrl}/login`;
-    
+
 
     return this.http.post(loginEndpoint, loginData);
   }

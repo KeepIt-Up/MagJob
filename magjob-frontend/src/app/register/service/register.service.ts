@@ -7,12 +7,12 @@ import { Register } from '../model/register';
   providedIn: 'root'
 })
 export class RegisterService {
-  private apiUrl = 'your_backend_api_url'; // Replace with your actual backend API URL
+  private apiUrl = '/api/users';
 
   constructor(private http: HttpClient) {}
 
   register(RegisterData: Register): Observable<any> {
-    const registrationEndpoint = `${this.apiUrl}/register`;
+    const registrationEndpoint = this.apiUrl;
 
     return this.http.post(registrationEndpoint, RegisterData);
   }
