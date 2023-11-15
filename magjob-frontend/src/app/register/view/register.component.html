@@ -2,25 +2,61 @@
   <div class="Logo">Mag<br>Job</div>
   <div class="mainContainer">
     <form class="registerForm" [formGroup]="registerForm" (submit)="onSubmit()">
-  
+
         <div class="registerTitle">Register</div>
-        
+
         <label for="email" class="Email">Email</label>
         <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"
         formControlName="email" [(ngModel)]="registerModel.email" required/>
-  
+        <div
+          *ngIf="registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="registerForm.controls.email.errors?.['required']">Email is required.</div>
+          <div *ngIf="registerForm.controls.email.errors?.['email']">Email must be correct.</div>
+        </div>
+
         <label class="Password">Password</label>
         <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" [(ngModel)]="registerModel.password" required/>
-  
+        <div
+          *ngIf="registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="registerForm.controls.password.errors?.['required']">Password is required.</div>
+          <div *ngIf="registerForm.controls.password.errors?.['pattern']">Password must contain minimum 5 characters, at least one uppercase letter, one lowercase letter, one number and one special character.</div>
+        </div>
+
         <label for="passwordConfirmation" class="RepeatPassword">Repeat Password</label>
-        <input type="password" class="form-control" id="passwordConfirmation" placeholder="Repeat Password" formControlName="passwordConfirmation" />
-  
+        <input type="password" class="form-control" id="passwordConfirmation" placeholder="Repeat Password" formControlName="passwordConfirmation" [(ngModel)]="passwordConfirmation" required/>
+        <div
+          *ngIf="registerForm.controls.passwordConfirmation.invalid && (registerForm.controls.passwordConfirmation.dirty || registerForm.controls.passwordConfirmation.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="registerForm.controls.passwordConfirmation.errors?.['required']">Password confirmation is required.</div>
+          <div *ngIf="registerForm.controls.passwordConfirmation.errors?.['doNotMatch']">Password confirmation differs from password.</div>
+        </div>
+
         <label class="Firstname">Firstname</label>
         <input type="text" class="form-control" id="firstname" placeholder="Your Firstname" formControlName="firstname" [(ngModel)]="registerModel.firstname" required/>
-  
+        <div
+          *ngIf="registerForm.controls.firstname.invalid && (registerForm.controls.firstname.dirty || registerForm.controls.firstname.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="registerForm.controls.firstname.errors?.['required']">First name is required.</div>
+          <div *ngIf="registerForm.controls.firstname.errors?.['pattern']">First name must be alphanumeric.</div>
+        </div>
+
         <label class="Lastname">Lastname</label>
         <input type="text" class="form-control" id="surname" placeholder="Your Lastname" formControlName="surname" [(ngModel)]="registerModel.lastname" required/>
-  
+        <div
+          *ngIf="registerForm.controls.surname.invalid && (registerForm.controls.surname.dirty || registerForm.controls.surname.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="registerForm.controls.surname.errors?.['required']">Last name is required.</div>
+          <div *ngIf="registerForm.controls.surname.errors?.['pattern']">Last name must be alphanumeric.</div>
+        </div>
+
         <button class="confirmButton">Register</button>
       </form>
+</div>
 </div>
