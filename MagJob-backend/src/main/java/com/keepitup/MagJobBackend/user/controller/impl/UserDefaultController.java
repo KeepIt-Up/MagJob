@@ -69,7 +69,7 @@ public class UserDefaultController implements UserController {
     public void deleteUser(BigInteger id) {
         service.find(id)
                 .ifPresentOrElse(
-                        profession -> service.delete(id),
+                        user -> service.delete(id),
                         () -> {
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                         }
