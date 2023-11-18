@@ -18,8 +18,6 @@ public interface UserService {
 
     List<User> findAllByFirstnameAndLastname(String firstname, String lastname);
 
-    Optional<User> authenticate(String email, String password);
-
     void register(User user);
 
     void delete(BigInteger id);

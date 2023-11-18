@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class LoginUserRequest {
+public class AuthenticationRequest {
 
     private String email;
     private String password;

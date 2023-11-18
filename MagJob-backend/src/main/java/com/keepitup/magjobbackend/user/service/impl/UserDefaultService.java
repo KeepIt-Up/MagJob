@@ -55,15 +55,6 @@ public class UserDefaultService implements UserService {
     }
 
     @Override
-    public Optional<User> authenticate(String email, String password) {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user;
-        }
-        return Optional.empty();
-    }
-
-    @Override
     public void register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
