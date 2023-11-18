@@ -11,6 +11,10 @@ import { RegisterComponent } from './register/view/register.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
+import { UserProfileComponent } from './user/view/user-profile/user-profile.component';
+import { UserSettingsComponent } from './user/view/user-settings/user-settings.component';
+import { OrganizationHomePageComponent } from './organization/view/organization-home-page/organization-home-page.component';
+import { OrganizationSettingsComponent } from './organization/view/organization-settings/organization-settings.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,11 @@ import { HttpClientModule } from '@angular/common/http';
     NavMenuComponent,
     LoginComponent,
     RegisterComponent,
-    FooterComponent
+    FooterComponent,
+    UserProfileComponent,
+    UserSettingsComponent,
+    OrganizationHomePageComponent,
+    OrganizationSettingsComponent
   ],
   imports: [
     BrowserModule,
