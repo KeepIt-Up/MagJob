@@ -3,20 +3,29 @@ package com.keepitup.magjobbackend.member.service.impl;
 import com.keepitup.magjobbackend.member.entity.Member;
 import com.keepitup.magjobbackend.member.repository.api.MemberRepository;
 import com.keepitup.magjobbackend.member.service.api.MemberService;
+import com.keepitup.magjobbackend.organization.entity.Organization;
+import com.keepitup.magjobbackend.organization.repository.api.OrganizationRepository;
+import com.keepitup.magjobbackend.user.entity.User;
+import com.keepitup.magjobbackend.user.repository.api.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberDefaultService implements MemberService {
     private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
+    private final OrganizationRepository organizationRepository;
 
     @Autowired
-    public MemberDefaultService(MemberRepository memberRepository) {
+    public MemberDefaultService(MemberRepository memberRepository, UserRepository userRepository, OrganizationRepository organizationRepository) {
         this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
@@ -38,6 +47,24 @@ public class MemberDefaultService implements MemberService {
     public Boolean checkIfStillMember(BigInteger id) {
         Optional<Member> member = memberRepository.findById(id);
         return member.map(Member::getIsStillMember).orElse(null);
+    }
+
+    @Override
+    public Optional<List<User>> findAllUsersByOrganization(BigInteger organizationId) {
+        return organizationRepository.findById(organizationId)
+                .map(memberRepository::findAllByOrganization)
+                .map(members -> members.stream()
+                        .map(Member::getUser)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public Optional<List<Organization>> findAllOrganizationsByUser(BigInteger userId) {
+        return userRepository.findById(userId)
+                .map(memberRepository::findAllByUser)
+                .map(members -> members.stream()
+                        .map(Member::getOrganization)
+                        .collect(Collectors.toList()));
     }
 
     @Override
