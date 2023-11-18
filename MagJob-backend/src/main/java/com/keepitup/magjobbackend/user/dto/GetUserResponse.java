@@ -17,8 +17,8 @@ public class GetUserResponse {
     private BigInteger id;
 
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String phoneNumber;
 
     private LocalDate birthDate;

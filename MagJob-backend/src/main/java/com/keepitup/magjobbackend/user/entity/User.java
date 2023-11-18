@@ -33,12 +33,12 @@ public class User {
     private String email;
 
     @Size(max = 50)
-    @Column(name = "first_name", length = 50)
-    private String firstName;
+    @Column(length = 50)
+    private String firstname;
 
     @Size(max = 50)
-    @Column(name = "last_name", length = 50)
-    private String lastName;
+    @Column(length = 50)
+    private String lastname;
 
     @NotNull
     @Size(min = 60, max = 60)

@@ -25,7 +25,7 @@ public interface UserController {
     @PostMapping("/api/users/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    void login(
+    GetUserResponse login(
             @RequestBody
             LoginUserRequest loginUserRequest
     );
@@ -33,7 +33,7 @@ public interface UserController {
     @PostMapping("/api/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    void createUser(
+    GetUserResponse createUser(
             @RequestBody
             PostUserRequest postUserRequest
     );
@@ -48,7 +48,7 @@ public interface UserController {
     @PatchMapping("/api/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    void updateUser(
+    GetUserResponse updateUser(
             @PathVariable("id")
             BigInteger id,
             @RequestBody

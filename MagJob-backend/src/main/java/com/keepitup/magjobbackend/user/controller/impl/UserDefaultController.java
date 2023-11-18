@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 @RestController
 @Log
@@ -53,16 +54,24 @@ public class UserDefaultController implements UserController {
     }
 
     @Override
-    public void login(LoginUserRequest loginUserRequest) {
-        if (service.authenticate(loginUserRequest.getEmail(), loginUserRequest.getPassword())) {
-            return;
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public GetUserResponse login(LoginUserRequest loginUserRequest) {
+        return service.authenticate(loginUserRequest.getEmail(), loginUserRequest.getPassword())
+                .map(userToResponse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public void createUser(PostUserRequest postUserRequest) {
-        service.register(requestToUser.apply(postUserRequest));
+    public GetUserResponse createUser(PostUserRequest postUserRequest) {
+        Optional<User> user = service.find(postUserRequest.getEmail());
+        if (user.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        else {
+            service.register(requestToUser.apply(postUserRequest));
+        }
+        return service.find(postUserRequest.getEmail())
+                .map(userToResponse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -77,17 +86,24 @@ public class UserDefaultController implements UserController {
     }
 
     @Override
-    public void updateUser(BigInteger id, PatchUserRequest patchUserRequest) {
-        User user = service.find(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        service.update(updateUserWithRequest.apply(user, patchUserRequest));
+    public GetUserResponse updateUser(BigInteger id, PatchUserRequest patchUserRequest) {
+        service.find(id)
+                .ifPresentOrElse(
+                    user -> service.update(updateUserWithRequest.apply(user, patchUserRequest)),
+                    () -> {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                    }
+                );
+        return getUser(id);
     }
 
     public void updateUserPassword(BigInteger id, PutPasswordRequest putPasswordRequest) {
-        User user = service.find(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        service.update(updateUserPasswordWithRequestFunction.apply(user, putPasswordRequest));
+        service.find(id)
+                .ifPresentOrElse(
+                        user -> service.update(updateUserPasswordWithRequestFunction.apply(user, putPasswordRequest)),
+                        () -> {
+                            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                        }
+                );
     }
 }

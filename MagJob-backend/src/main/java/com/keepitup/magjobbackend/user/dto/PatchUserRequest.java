@@ -12,8 +12,8 @@ import lombok.*;
 public class PatchUserRequest {
 
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String phoneNumber;
 
 }

@@ -14,8 +14,8 @@ public class UserToResponseFunction implements Function<User, GetUserResponse> {
         return GetUserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
                 .phoneNumber(user.getPhoneNumber())
                 .birthDate(user.getBirthDate())
                 .build();

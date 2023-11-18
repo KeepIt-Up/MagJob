@@ -12,13 +12,13 @@ public interface UserService {
 
     Optional<User> find(String email);
 
-    List<User> findAllByFirstName(String firstName);
+    List<User> findAllByFirstname(String firstname);
 
-    List<User> findAllByLastName(String lastName);
+    List<User> findAllByLastname(String lastname);
 
-    List<User> findAllByFirstNameAndLastName(String firstName, String lastName);
+    List<User> findAllByFirstnameAndLastname(String firstname, String lastname);
 
-    boolean authenticate(String email, String password);
+    Optional<User> authenticate(String email, String password);
 
     void register(User user);
 

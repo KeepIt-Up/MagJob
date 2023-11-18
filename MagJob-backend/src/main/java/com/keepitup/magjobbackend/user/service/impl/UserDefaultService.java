@@ -40,24 +40,27 @@ public class UserDefaultService implements UserService {
     }
 
     @Override
-    public List<User> findAllByFirstName(String firstName) {
-        return userRepository.findAllByFirstName(firstName);
+    public List<User> findAllByFirstname(String firstname) {
+        return userRepository.findAllByFirstname(firstname);
     }
 
     @Override
-    public List<User> findAllByLastName(String lastName) {
-        return userRepository.findAllByLastName(lastName);
+    public List<User> findAllByLastname(String lastname) {
+        return userRepository.findAllByLastname(lastname);
     }
 
     @Override
-    public List<User> findAllByFirstNameAndLastName(String firstName, String lastName) {
-        return userRepository.findAllByFirstNameAndLastName(firstName, lastName);
+    public List<User> findAllByFirstnameAndLastname(String firstname, String lastname) {
+        return userRepository.findAllByFirstnameAndLastname(firstname, lastname);
     }
 
     @Override
-    public boolean authenticate(String email, String password) {
+    public Optional<User> authenticate(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.filter(value -> passwordEncoder.matches(password, value.getPassword())).isPresent();
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+            return user;
+        }
+        return Optional.empty();
     }
 
     @Override

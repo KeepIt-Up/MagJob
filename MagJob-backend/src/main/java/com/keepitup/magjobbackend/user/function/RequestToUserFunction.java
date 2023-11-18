@@ -13,8 +13,8 @@ public class RequestToUserFunction implements Function<PostUserRequest, User> {
     public User apply(PostUserRequest request) {
         return User.builder()
                 .email(request.getEmail())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
                 .password(request.getPassword())
                 .build();
     }
