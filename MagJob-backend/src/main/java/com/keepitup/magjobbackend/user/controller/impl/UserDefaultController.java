@@ -128,8 +128,12 @@ public class UserDefaultController implements UserController {
         }
         final UserDetails userDetails = authenticationService.loadUserByUsername(authenticationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        final GetUserResponse user = service.find(authenticationRequest.getEmail())
+                .map(userToResponse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return AuthenticationResponse.builder()
                 .jwt(jwt)
+                .user(user)
                 .build();
     }
 }

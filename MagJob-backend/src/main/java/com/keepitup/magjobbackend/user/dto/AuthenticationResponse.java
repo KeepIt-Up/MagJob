@@ -11,4 +11,5 @@ import lombok.*;
 @EqualsAndHashCode
 public class AuthenticationResponse {
     private String jwt;
+    private GetUserResponse user;
 }
