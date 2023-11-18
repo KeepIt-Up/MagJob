@@ -1,1 +1,30 @@
-<p>user-settings works!</p>
+<!-- src/app/user-settings/user-settings.component.html -->
+<form [formGroup]="userSettingsForm" (ngSubmit)="onSubmit()">
+    <!-- Password Change Form -->
+    <div formGroupName="password">
+      <label for="currentPassword">Current Password</label>
+      <input type="password" id="currentPassword" formControlName="currentPassword">
+  
+      <label for="newPassword">New Password</label>
+      <input type="password" id="newPassword" formControlName="newPassword">
+  
+      <label for="confirmNewPassword">Confirm New Password</label>
+      <input type="password" id="confirmNewPassword" formControlName="confirmNewPassword">
+    </div>
+  
+    <!-- Email Change Form -->
+    <label for="email">New Email</label>
+    <input type="text" id="email" formControlName="email">
+  
+    <!-- Name Change Form -->
+    <div formGroupName="name">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" formControlName="firstName">
+  
+      <label for="surname">Surname</label>
+      <input type="text" id="surname" formControlName="surname">
+    </div>
+  
+    <button type="submit">Save Changes</button>
+  </form>
+  
