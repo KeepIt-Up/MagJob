@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  magjob-backend:
+    image: magjob-backend:0.0.1
+    restart: always
+    #depends_on:
+    #  - db
+    #environment:
+    #  - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+
+  magjob-frontend:
+    image: magjob-frontend:0.0.1
+    restart: always
+    environment:
+      API_URL: http://magjob-backend:8080/api
+    ports:
+      - "8080:80"
+    depends_on:
+      - magjob-backend
+
+  #db:
+  #  image: postgres:15.5-bullseye
+  #  restart: always
+  #  ports:
+  #    - "5432:5432"
+  #  volumes:
+  #    - ~/apps/postgres:/var/lib/postgresql/data
+  #  environment:
+  #    - POSTGRES_PASSWORD=admin
+  #    - POSTGRES_USER=admin
+  #    - POSTGRES_DB=db

@@ -12,15 +12,17 @@
 	</parent>
 
 	<groupId>com.keepitup</groupId>
-	<artifactId>MagJob-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>magjob-backend</artifactId>
+	<version>0.0.1</version>
 
-	<name>MagJob-backend</name>
+	<name>magjob-backend</name>
 	<description>MagJob backend</description>
 
-	<properties>
-		<java.version>17</java.version>
-	</properties>
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
 	<dependencies>
 		<dependency>
