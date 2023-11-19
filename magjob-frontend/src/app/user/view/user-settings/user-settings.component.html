@@ -1,28 +1,25 @@
 <!-- src/app/user-settings/user-settings.component.html -->
 <form [formGroup]="userSettingsForm" (ngSubmit)="onSubmit()">
     <!-- Password Change Form -->
+    <h4>Change password</h4>
     <div formGroupName="password">
-      <label for="currentPassword">Current Password</label>
-      <input type="password" id="currentPassword" formControlName="currentPassword">
+      <input type="password" id="currentPassword" formControlName="currentPassword" placeholder="Current Password">
   
-      <label for="newPassword">New Password</label>
-      <input type="password" id="newPassword" formControlName="newPassword">
+      <input type="password" id="newPassword" formControlName="newPassword" placeholder="New Password">
   
-      <label for="confirmNewPassword">Confirm New Password</label>
-      <input type="password" id="confirmNewPassword" formControlName="confirmNewPassword">
+      <input type="password" id="confirmNewPassword" formControlName="confirmNewPassword" placeholder="Repeat New Password">
     </div>
   
     <!-- Email Change Form -->
-    <label for="email">New Email</label>
-    <input type="text" id="email" formControlName="email">
+    <h4>Change email</h4>
+    <input type="text" id="email" formControlName="email" placeholder="New Email">
   
     <!-- Name Change Form -->
+    <h4>Change Firstname and Surname</h4>
     <div formGroupName="name">
-      <label for="firstName">First Name</label>
-      <input type="text" id="firstName" formControlName="firstName">
+      <input type="text" id="firstName" formControlName="firstName" placeholder="Firstname">
   
-      <label for="surname">Surname</label>
-      <input type="text" id="surname" formControlName="surname">
+      <input type="text" id="surname" formControlName="surname" placeholder="Surname">
     </div>
   
     <button type="submit">Save Changes</button>
