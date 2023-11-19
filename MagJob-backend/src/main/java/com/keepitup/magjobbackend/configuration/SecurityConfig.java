@@ -35,6 +35,7 @@ public class SecurityConfig {
     private static final AntPathRequestMatcher[] authenticatedList = {
             new AntPathRequestMatcher("/api/users/{id}"),
             new AntPathRequestMatcher("/api/users", "GET"),
+            new AntPathRequestMatcher("/v3/api-docs", "GET")
     };
 
     @Bean
