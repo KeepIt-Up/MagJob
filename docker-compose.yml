@@ -30,3 +30,25 @@ services:
   #    - POSTGRES_PASSWORD=admin
   #    - POSTGRES_USER=admin
   #    - POSTGRES_DB=db
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./magjob-backend/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - magjob-frontend
+
+  grafana:
+    image: grafana/grafana:10.2.1
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./magjob-backend/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus

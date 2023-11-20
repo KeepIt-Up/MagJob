@@ -23,7 +23,15 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private static final AntPathRequestMatcher[] permitAllList = {
             new AntPathRequestMatcher("/api/users", "POST"),
-            new AntPathRequestMatcher("/api/users/login")
+            new AntPathRequestMatcher("/api/users/login"),
+    };
+
+    private static final AntPathRequestMatcher[] authenticatedList = {
+            new AntPathRequestMatcher("/api/users/{id}"),
+            new AntPathRequestMatcher("/api/users", "GET"),
+            new AntPathRequestMatcher("/v3/api-docs/**", "GET"),
+            new AntPathRequestMatcher("/swagger-ui/**"),
+            new AntPathRequestMatcher("/actuator/**"),
     };
 
     private final JwtRequestFilter jwtRequestFilter;
@@ -32,12 +40,6 @@ public class SecurityConfig {
     public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
-    private static final AntPathRequestMatcher[] authenticatedList = {
-            new AntPathRequestMatcher("/api/users/{id}"),
-            new AntPathRequestMatcher("/api/users", "GET"),
-            new AntPathRequestMatcher("/v3/api-docs", "GET"),
-            new AntPathRequestMatcher("/swagger-ui/**")
-    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
