@@ -42,6 +42,7 @@ public class OrganizationDefaultService implements OrganizationService {
 
     @Override
     public void create(Organization organization) {
+        organization.setDateOfCreation(ZonedDateTime.now());
         organizationRepository.save(organization);
     }
 
