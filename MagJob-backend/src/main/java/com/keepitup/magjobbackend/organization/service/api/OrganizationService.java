@@ -9,9 +9,10 @@ import java.util.Optional;
 
 public interface OrganizationService {
     List<Organization> findAll();
+
     Optional<Organization> find(BigInteger id);
 
-    List<Organization> findAllByName(String name);
+    Optional<Organization> findByName(String name);
 
     List<Organization> findAllByDateOfCreation(ZonedDateTime dateOfCreation);
 

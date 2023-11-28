@@ -2,6 +2,8 @@ package com.keepitup.magjobbackend.organization.dto;
 
 import lombok.*;
 
+import java.math.BigInteger;
+
 @Getter
 @Setter
 @Builder
@@ -13,5 +15,6 @@ public class PostOrganizationRequest {
 
     private String name;
     private String profileBannerUrl;
+    private BigInteger user;
 
 }

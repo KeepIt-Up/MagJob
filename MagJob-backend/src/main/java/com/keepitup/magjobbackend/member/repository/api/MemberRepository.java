@@ -8,10 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, BigInteger> {
+    List<Member> findAllByIsStillMember(Boolean isStillMember);
+    Optional<Member> findByIdAndIsStillMember(BigInteger id, Boolean isStillMember);
     List<Member> findAllByPseudonym(String pseudonym);
     List<Member> findAllByOrganization(Organization organization);
     List<Member> findAllByUser(User user);
+    Optional<Member> findByUserId(BigInteger id);
 }
