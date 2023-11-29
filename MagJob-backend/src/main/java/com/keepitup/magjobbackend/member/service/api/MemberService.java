@@ -16,6 +16,7 @@ public interface MemberService {
 
     List<Member> findAllByPseudonym(String pseudonym);
     List<Member> findAllByOrganization(Organization organization);
+    List<Member> findAllByOrganizationAndIsStillMember(Organization organization, Boolean isStillMember);
 
     Boolean checkIfStillMember(BigInteger id);
 

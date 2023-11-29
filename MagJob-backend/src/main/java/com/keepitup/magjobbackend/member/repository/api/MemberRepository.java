@@ -16,6 +16,7 @@ public interface MemberRepository extends JpaRepository<Member, BigInteger> {
     Optional<Member> findByIdAndIsStillMember(BigInteger id, Boolean isStillMember);
     List<Member> findAllByPseudonym(String pseudonym);
     List<Member> findAllByOrganization(Organization organization);
+    List<Member> findAllByOrganizationAndIsStillMember(Organization organization, Boolean isStillMember);
     List<Member> findAllByUser(User user);
     Optional<Member> findByUserId(BigInteger id);
 }

@@ -56,7 +56,7 @@ public class MemberDefaultController implements MemberController {
         Organization organization = organizationOptional
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return membersToResponse.apply(service.findAllByOrganization(organization));
+        return membersToResponse.apply(service.findAllByOrganizationAndIsStillMember(organization, true));
     }
 
     @Override
@@ -71,8 +71,8 @@ public class MemberDefaultController implements MemberController {
         Optional<List<Organization>> organizations = service.findAllOrganizationsByUser(postMemberRequest.getUser());
         Optional<Organization>  organization = organizationService.find(postMemberRequest.getOrganization());
 
-        if (organization.isPresent() && organizations.isPresent()
-                && organizations.get().contains(organization.get())
+        if (organization.isEmpty() || organizations.isEmpty()
+                || organizations.get().contains(organization.get())
         ) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         } else {

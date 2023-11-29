@@ -54,6 +54,11 @@ public class MemberDefaultService implements MemberService {
     }
 
     @Override
+    public List<Member> findAllByOrganizationAndIsStillMember(Organization organization, Boolean isStillMember) {
+        return memberRepository.findAllByOrganizationAndIsStillMember(organization, isStillMember);
+    }
+
+    @Override
     public Boolean checkIfStillMember(BigInteger id) {
         Optional<Member> member = memberRepository.findById(id);
         return member.map(Member::getIsStillMember).orElse(null);
