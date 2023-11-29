@@ -5,10 +5,7 @@ import com.keepitup.magjobbackend.member.dto.*;
 import com.keepitup.magjobbackend.member.entity.Member;
 import com.keepitup.magjobbackend.member.function.*;
 import com.keepitup.magjobbackend.member.service.api.MemberService;
-import com.keepitup.magjobbackend.organization.dto.GetOrganizationResponse;
 import com.keepitup.magjobbackend.organization.entity.Organization;
-import com.keepitup.magjobbackend.organization.function.OrganizationToResponseFunction;
-import com.keepitup.magjobbackend.organization.function.RequestToOrganizationFunction;
 import com.keepitup.magjobbackend.organization.service.api.OrganizationService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,8 +26,6 @@ public class MemberDefaultController implements MemberController {
     private final MemberToResponseFunction memberToResponse;
     private final RequestToMemberFunction requestToMember;
     private final UpdateMemberWithRequestFunction updateMemberWithRequest;
-    private final OrganizationToResponseFunction organizationToResponse;
-
 
     @Autowired
     public MemberDefaultController(
@@ -38,9 +34,7 @@ public class MemberDefaultController implements MemberController {
             MembersToResponseFunction membersToResponse,
             MemberToResponseFunction memberToResponse,
             RequestToMemberFunction requestToMember,
-            UpdateMemberWithRequestFunction updateMemberWithRequest,
-            RequestToOrganizationFunction requestToOrganization,
-            OrganizationToResponseFunction organizationToResponse
+            UpdateMemberWithRequestFunction updateMemberWithRequest
     ) {
         this.service = service;
         this.organizationService = organizationService;
@@ -48,7 +42,6 @@ public class MemberDefaultController implements MemberController {
         this.memberToResponse = memberToResponse;
         this.requestToMember = requestToMember;
         this.updateMemberWithRequest = updateMemberWithRequest;
-        this.organizationToResponse = organizationToResponse;
     }
 
     @Override
@@ -75,8 +68,12 @@ public class MemberDefaultController implements MemberController {
 
     @Override
     public GetMemberResponse createMember(PostMemberRequest postMemberRequest) {
-        Optional<Member> member = service.findByUserId(postMemberRequest.getUser());
-        if (member.isPresent()) {
+        Optional<List<Organization>> organizations = service.findAllOrganizationsByUser(postMemberRequest.getUser());
+        Optional<Organization>  organization = organizationService.find(postMemberRequest.getOrganization());
+
+        if (organization.isPresent() && organizations.isPresent()
+                && organizations.get().contains(organization.get())
+        ) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         } else {
             service.create(requestToMember.apply(postMemberRequest));

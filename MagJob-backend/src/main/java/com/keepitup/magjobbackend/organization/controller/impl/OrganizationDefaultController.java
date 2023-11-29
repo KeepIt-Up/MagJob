@@ -69,7 +69,7 @@ public class OrganizationDefaultController implements OrganizationController {
         } else {
             service.create(requestToOrganization.apply(postOrganizationRequest));
             Optional<User> user = userService.find(postOrganizationRequest.getUser());
-            Optional<Organization> createdOrganization = service.find(postOrganizationRequest.getUser());
+            Optional<Organization> createdOrganization = service.findByName(postOrganizationRequest.getName());
 
             if (user.isPresent() && createdOrganization.isPresent()) {
                 memberService.create(Member.builder()
