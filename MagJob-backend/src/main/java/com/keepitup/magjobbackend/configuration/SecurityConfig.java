@@ -32,6 +32,12 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/v3/api-docs/**", "GET"),
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/actuator/**"),
+            new AntPathRequestMatcher("/api/organizations"),
+            new AntPathRequestMatcher("/api/organizations/{id}"),
+            new AntPathRequestMatcher("/api/members"),
+            new AntPathRequestMatcher("/api/members/{id}"),
+            new AntPathRequestMatcher("/api/organizations/{organizationId}/members"),
+            new AntPathRequestMatcher("/api/organizations/users/{userId}")
     };
 
     private final JwtRequestFilter jwtRequestFilter;

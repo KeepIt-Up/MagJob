@@ -29,8 +29,8 @@ public class MemberDefaultService implements MemberService {
     }
 
     @Override
-    public List<Member> findAll() {
-        return memberRepository.findAll();
+    public List<Member> findAllByIsStillMember(Boolean isStillMember) {
+        return memberRepository.findAllByIsStillMember(isStillMember);
     }
 
     @Override
@@ -39,8 +39,23 @@ public class MemberDefaultService implements MemberService {
     }
 
     @Override
+    public Optional<Member> findByIdAndIsStillMember(BigInteger id, Boolean isStillMember) {
+        return memberRepository.findByIdAndIsStillMember(id, isStillMember);
+    }
+
+    @Override
     public List<Member> findAllByPseudonym(String pseudonym) {
         return memberRepository.findAllByPseudonym(pseudonym);
+    }
+
+    @Override
+    public List<Member> findAllByOrganization(Organization organization) {
+        return memberRepository.findAllByOrganization(organization);
+    }
+
+    @Override
+    public List<Member> findAllByOrganizationAndIsStillMember(Organization organization, Boolean isStillMember) {
+        return memberRepository.findAllByOrganizationAndIsStillMember(organization, isStillMember);
     }
 
     @Override
@@ -68,13 +83,19 @@ public class MemberDefaultService implements MemberService {
     }
 
     @Override
+    public Optional<Member> findByUserId(BigInteger id) {
+        return memberRepository.findByUserId(id);
+    }
+
+    @Override
     public void create(Member member) {
+        member.setIsStillMember(true);
         memberRepository.save(member);
     }
 
     @Override
     public void delete(BigInteger id) {
-        memberRepository.findById(id).ifPresent(memberRepository::delete);
+        memberRepository.findById(id).ifPresent(member -> member.setIsStillMember(false));
     }
 
     @Override

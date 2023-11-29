@@ -31,8 +31,8 @@ public class OrganizationDefaultService implements OrganizationService {
     }
 
     @Override
-    public List<Organization> findAllByName(String name) {
-        return organizationRepository.findAllByName(name);
+    public Optional<Organization> findByName(String name) {
+        return organizationRepository.findByName(name);
     }
 
     @Override

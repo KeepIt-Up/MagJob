@@ -9,16 +9,22 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberService {
-    List<Member> findAll();
+    List<Member> findAllByIsStillMember(Boolean isStillMember);
     Optional<Member> find(BigInteger id);
 
+    Optional<Member> findByIdAndIsStillMember(BigInteger id, Boolean isStillMember);
+
     List<Member> findAllByPseudonym(String pseudonym);
+    List<Member> findAllByOrganization(Organization organization);
+    List<Member> findAllByOrganizationAndIsStillMember(Organization organization, Boolean isStillMember);
 
     Boolean checkIfStillMember(BigInteger id);
 
     Optional<List<User>> findAllUsersByOrganization(BigInteger organizationId);
 
     Optional<List<Organization>> findAllOrganizationsByUser(BigInteger userId);
+
+    Optional<Member> findByUserId(BigInteger id);
 
     void create(Member member);
 
