@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -59,6 +60,16 @@ public class OrganizationDefaultController implements OrganizationController {
         return service.find(id)
                 .map(organizationToResponse)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public GetOrganizationsResponse getOrganizationsByUser(BigInteger id) {
+        Optional<List<Organization>> organizationsOptional = memberService.findAllOrganizationsByUser(id);
+
+        List<Organization> organizations = organizationsOptional
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return organizationsToResponse.apply(organizations);
     }
 
     @Override

@@ -14,6 +14,14 @@ public interface OrganizationController {
     @ResponseBody
     GetOrganizationsResponse getOrganizations();
 
+    @GetMapping("api/organizations/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    GetOrganizationsResponse getOrganizationsByUser(
+            @PathVariable("userId")
+            BigInteger id
+    );
+
     @GetMapping("api/organizations/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

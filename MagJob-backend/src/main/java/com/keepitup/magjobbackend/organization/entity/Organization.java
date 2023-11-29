@@ -27,7 +27,7 @@ public class Organization {
     private BigInteger id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "date_of_creation")
