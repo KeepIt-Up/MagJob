@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MagJob.iml" filepath="$PROJECT_DIR$/.idea/MagJob.iml" />
-      <module fileurl="file://$PROJECT_DIR$/magjob-frontend/magjob-frontend.iml" filepath="$PROJECT_DIR$/magjob-frontend/magjob-frontend.iml" />
     </modules>
   </component>
 </project>
