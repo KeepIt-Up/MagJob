@@ -1,4 +1,4 @@
-import { LoginService } from '../service/login.service';
+import { AuthService } from '../../jwt/auth.service';
 import { Component } from '@angular/core';
 import { Login } from '../model/login';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -28,19 +28,16 @@ export class LoginComponent {
 
   loginModel: Login = new Login('', ''); // Initialize with empty values
 
-  constructor(private loginService: LoginService) {}
+  constructor(private authService: AuthService) {}
 
     submitApplication() {
       if (!(this.loginForm.invalid && (this.loginForm.dirty || this.loginForm.touched)) && this.loginModel.email && this.loginModel.password) {
-        // Call the login service to verify the user's credentials
-        this.loginService.login(this.loginModel).subscribe(
+        this.authService.login(this.loginModel).subscribe(
           (response) => {
-            console.log('Login successful:', response);
-            // Add any additional logic after a successful login
+            localStorage.setItem('access_token', response.jwt);
           },
           (error) => {
             console.error('Login failed:', error);
-            // Handle login failure (show error message, etc.)
           }
         );
       }
