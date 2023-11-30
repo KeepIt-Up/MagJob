@@ -1,5 +1,6 @@
 package com.keepitup.magjobbackend.user.entity;
 
+import com.keepitup.magjobbackend.invitation.entity.Invitation;
 import com.keepitup.magjobbackend.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -53,4 +54,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Member> memberships;
+
+    @OneToMany(mappedBy = "user")
+    private List<Invitation> invitations;
 }
