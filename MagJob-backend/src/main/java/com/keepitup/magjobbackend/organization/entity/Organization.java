@@ -1,5 +1,6 @@
 package com.keepitup.magjobbackend.organization.entity;
 
+import com.keepitup.magjobbackend.invitation.entity.Invitation;
 import com.keepitup.magjobbackend.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,4 +40,7 @@ public class Organization {
 
     @OneToMany(mappedBy = "organization")
     private List<Member> members;
+
+    @OneToMany(mappedBy = "organization")
+    private List<Invitation> invitations;
 }
