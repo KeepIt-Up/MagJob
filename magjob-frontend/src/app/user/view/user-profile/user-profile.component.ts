@@ -11,15 +11,24 @@ import { UserProfile } from '../../model/user-profile';
 })
 export class UserProfileComponent implements OnInit {
   userProfile!: UserProfile;
-
+  userId: number | null = null;
   constructor(
     private route: ActivatedRoute,
     private userProfileService: UserProfileService
   ) {}
 
   ngOnInit(): void {
-    const userId = 1; // assuming the user id is part of the route
-    this.userProfileService.getUserProfile(userId)
+    // Access the userId from the URL parameters
+    const userIdParam = this.route.snapshot.paramMap.get('id');
+    if(userIdParam !== null)
+    {
+      this.userId = +userIdParam;
+      this.userProfileService.getUserProfile(this.userId)
       .subscribe(userProfile => this.userProfile = userProfile);
+    }
+    else{
+      console.log("Damian");
+    }
+    
   }
 }
