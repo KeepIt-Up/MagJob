@@ -4,6 +4,7 @@ import com.keepitup.magjobbackend.member.entity.Member;
 import com.keepitup.magjobbackend.organization.entity.Organization;
 import com.keepitup.magjobbackend.user.entity.User;
 
+import javax.swing.text.html.Option;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public interface MemberService {
 
     Optional<List<Organization>> findAllOrganizationsByUser(BigInteger userId);
 
-    Optional<Member> findByUserId(BigInteger id);
+    Optional<Member> findByUserAndOrganization(User user, Organization organization);
 
     void create(Member member);
 

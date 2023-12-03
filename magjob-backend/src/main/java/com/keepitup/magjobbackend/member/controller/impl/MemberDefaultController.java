@@ -7,6 +7,8 @@ import com.keepitup.magjobbackend.member.function.*;
 import com.keepitup.magjobbackend.member.service.api.MemberService;
 import com.keepitup.magjobbackend.organization.entity.Organization;
 import com.keepitup.magjobbackend.organization.service.api.OrganizationService;
+import com.keepitup.magjobbackend.user.entity.User;
+import com.keepitup.magjobbackend.user.service.api.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @Log
 public class MemberDefaultController implements MemberController {
     private final MemberService service;
+    private final UserService userService;
     private final OrganizationService organizationService;
     private final MembersToResponseFunction membersToResponse;
     private final MemberToResponseFunction memberToResponse;
@@ -30,6 +33,7 @@ public class MemberDefaultController implements MemberController {
     @Autowired
     public MemberDefaultController(
             MemberService service,
+            UserService userService,
             OrganizationService organizationService,
             MembersToResponseFunction membersToResponse,
             MemberToResponseFunction memberToResponse,
@@ -37,6 +41,7 @@ public class MemberDefaultController implements MemberController {
             UpdateMemberWithRequestFunction updateMemberWithRequest
     ) {
         this.service = service;
+        this.userService = userService;
         this.organizationService = organizationService;
         this.membersToResponse = membersToResponse;
         this.memberToResponse = memberToResponse;
@@ -70,15 +75,16 @@ public class MemberDefaultController implements MemberController {
     public GetMemberResponse createMember(PostMemberRequest postMemberRequest) {
         Optional<List<Organization>> organizations = service.findAllOrganizationsByUser(postMemberRequest.getUser());
         Optional<Organization>  organization = organizationService.find(postMemberRequest.getOrganization());
+        Optional<User> user = userService.find(postMemberRequest.getUser());
 
-        if (organization.isEmpty() || organizations.isEmpty()
+        if (user.isEmpty() || organization.isEmpty() || organizations.isEmpty()
                 || organizations.get().contains(organization.get())
         ) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         } else {
             service.create(requestToMember.apply(postMemberRequest));
         }
-        return service.findByUserId(postMemberRequest.getUser())
+        return service.findByUserAndOrganization(user.get(), organization.get())
                 .map(memberToResponse)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

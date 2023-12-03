@@ -83,8 +83,8 @@ public class MemberDefaultService implements MemberService {
     }
 
     @Override
-    public Optional<Member> findByUserId(BigInteger id) {
-        return memberRepository.findByUserId(id);
+    public Optional<Member> findByUserAndOrganization(User user, Organization organization) {
+        return memberRepository.findByUserAndOrganization(user, organization);
     }
 
     @Override
