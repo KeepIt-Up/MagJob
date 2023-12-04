@@ -35,9 +35,6 @@ import { JwtInterceptor } from './jwt/jwt.interceptor';
     AppRoutingModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
     ]),
     ReactiveFormsModule,
     HttpClientModule,
