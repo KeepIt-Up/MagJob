@@ -9,8 +9,6 @@ import com.keepitup.magjobbackend.invitation.function.InvitationToResponseFuncti
 import com.keepitup.magjobbackend.invitation.function.InvitationsToResponseFunction;
 import com.keepitup.magjobbackend.invitation.function.RequestToInvitationFunction;
 import com.keepitup.magjobbackend.invitation.service.api.InvitationService;
-import com.keepitup.magjobbackend.organization.service.api.OrganizationService;
-import com.keepitup.magjobbackend.user.service.api.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,7 +64,8 @@ public class InvitationDefaultController implements InvitationController {
 
     @Override
     public GetInvitationResponse sendInvitation(PostInvitationRequest request) {
-        /*  List<Invitation> activeInvitations = service.findAllByUserAndOrganization(request.getUser(), request.getOrganization())
+
+        List<Invitation> activeInvitations = service.findAllByUserAndOrganization(request.getUser(), request.getOrganization())
                 .orElse(List.of())
                 .stream()
                 .filter(Invitation::getIsActive)
@@ -74,7 +73,7 @@ public class InvitationDefaultController implements InvitationController {
 
         if (!activeInvitations.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An active invitation already exists.");
-        } */
+        }
 
         Invitation invitation = requestToInvitation.apply(request);
         service.create(invitation);
