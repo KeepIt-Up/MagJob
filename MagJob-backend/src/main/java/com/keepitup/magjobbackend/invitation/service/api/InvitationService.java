@@ -19,6 +19,8 @@ public interface InvitationService {
 
     Optional<List<Invitation>> findAllByOrganizationAndIsActive(BigInteger organizationId, Boolean isActive);
 
+    Optional<List<Invitation>> findAllByUserAndOrganization(BigInteger userId, BigInteger organizationId);
+
     List<Invitation> findAllByDateOfCreation(ZonedDateTime dateOfCreation);
 
     void create(Invitation invitation);

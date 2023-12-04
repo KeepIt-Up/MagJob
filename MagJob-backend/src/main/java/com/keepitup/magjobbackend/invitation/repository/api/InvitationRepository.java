@@ -17,4 +17,5 @@ public interface InvitationRepository extends JpaRepository<Invitation, BigInteg
     List<Invitation> findAllByOrganization(Organization organization);
     List<Invitation> findAllByOrganizationAndIsActive(Organization organization, Boolean isActive);
     List<Invitation> findAllByDateOfCreation(ZonedDateTime dateOfCreation);
+    List<Invitation> findAllByUserAndOrganization(User user, Organization organization);
 }
