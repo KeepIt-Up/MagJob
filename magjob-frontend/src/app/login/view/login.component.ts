@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Login } from '../model/login';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/user/service/user.service';
 
 
 @Component({
@@ -29,13 +30,14 @@ export class LoginComponent {
 
   loginModel: Login = new Login('', ''); // Initialize with empty values
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private userService: UserService) {}
 
     submitApplication() {
       if (!(this.loginForm.invalid && (this.loginForm.dirty || this.loginForm.touched)) && this.loginModel.email && this.loginModel.password) {
         this.authService.login(this.loginModel).subscribe(
           (response) => {
             localStorage.setItem('access_token', response.jwt);
+            this.userService.setCurrentUser(response.user);
             const userId = response.user.id;
             this.router.navigate(['/user', userId]);
           },
