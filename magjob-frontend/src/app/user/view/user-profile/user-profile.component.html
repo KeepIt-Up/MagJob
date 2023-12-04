@@ -1,6 +1,8 @@
-<div *ngIf="userProfile">
-    <h2>User Profile</h2>
-    <p>ID: {{ userProfile.id }}</p>
-    <p>Username: {{ userProfile.firstname }}</p>
-    <p>Lastname: {{ userProfile.lastname }}</p>
+<div class="UserProfileCard" *ngIf="userProfile">
+  <div class="ProfileHeader">
+    <div class="NameAndSurname">
+    <p>{{ userProfile.firstname }}</p>
+    <p>{{ userProfile.lastname }}</p>
   </div>
+  </div>
+</div>
