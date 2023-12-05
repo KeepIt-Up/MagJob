@@ -1,0 +1,59 @@
+.organization-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.organization-form h2 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.type-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+button {
+    padding: 8px 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+button.selected {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:active {
+    background-color: #4CAF50;
+}
+
+button:focus {
+    outline: none;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    margin-top: 15px;
+}
