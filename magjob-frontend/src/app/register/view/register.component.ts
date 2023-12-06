@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import { Register } from '../model/register'
 import { RegisterService } from '../service/register.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -47,7 +48,7 @@ export class RegisterComponent {
       ]),
   });
 
-  constructor(private RegisterService: RegisterService) { }
+  constructor(private RegisterService: RegisterService, private router: Router) { }
 
   onSubmit() {
     if (!(this.registerForm.invalid && (this.registerForm.dirty || this.registerForm.touched))
@@ -56,6 +57,7 @@ export class RegisterComponent {
       this.RegisterService.register(this.registerModel).subscribe(
         (response) => {
           console.log('Registration successful:', response);
+          this.router.navigate(['/login']);
           // Add any additional logic after a successful registration
         },
         (error) => {
