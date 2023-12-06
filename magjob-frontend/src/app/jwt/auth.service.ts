@@ -22,6 +22,7 @@ export class AuthService {
   logout() {
     // Clear token from local storage
     localStorage.removeItem('access_token');
+    localStorage.removeItem('User');
   }
 
   isAuthenticated(): boolean {

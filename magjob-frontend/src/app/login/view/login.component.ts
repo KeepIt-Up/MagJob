@@ -38,8 +38,15 @@ export class LoginComponent {
           (response) => {
             localStorage.setItem('access_token', response.jwt);
             this.userService.setCurrentUser(response.user);
-            const userId = response.user.id;
-            this.router.navigate(['/user', userId]);
+            if(this.userService.belongToAnyOrganization() == false)
+            {
+              this.router.navigate(['/noorganization']);
+            }
+            else{
+              const userId = response.user.id;
+              this.router.navigate(['/user', userId]);
+            }
+            
           },
           (error) => {
             console.error('Login failed:', error);
