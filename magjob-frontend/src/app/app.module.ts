@@ -18,6 +18,7 @@ import { OrganizationSettingsComponent } from './organization/view/organization-
 import { JwtInterceptor } from './jwt/jwt.interceptor';
 import { UserOrganizationComponent } from './user/view/user-organization/user-organization.component';
 import { OrganizationCreationComponent } from './organization/view/organization-creation/organization-creation.component';
+import { NoOrganizationComponent } from './organization/view/no-organization/no-organization.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { OrganizationCreationComponent } from './organization/view/organization-
     OrganizationHomePageComponent,
     OrganizationSettingsComponent,
     UserOrganizationComponent,
-    OrganizationCreationComponent
+    OrganizationCreationComponent,
+    NoOrganizationComponent
   ],
   imports: [
     BrowserModule,

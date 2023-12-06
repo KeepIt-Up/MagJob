@@ -5,7 +5,9 @@ import { UserSettingsComponent } from './user/view/user-settings/user-settings.c
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/view/login.component';
 import { RegisterComponent } from './register/view/register.component';
+import { NoOrganizationComponent } from './organization/view/no-organization/no-organization.component';
 import { AuthGuard } from './jwt/auth.guard';
+import { OrganizationCreationComponent } from './organization/view/organization-creation/organization-creation.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -13,6 +15,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'user/:id', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'user/:userId/settings', component: UserSettingsComponent, canActivate: [AuthGuard] },
+  { path: 'create-organization', component: OrganizationCreationComponent},
+  { path: 'noorganization', component: NoOrganizationComponent}
 ];
 
 @NgModule({
