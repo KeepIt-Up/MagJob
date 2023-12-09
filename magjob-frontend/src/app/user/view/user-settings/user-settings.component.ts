@@ -27,13 +27,9 @@ export class UserSettingsComponent implements OnInit {
       password: this.formBuilder.group({
         currentPassword: ['', Validators.required],
         newPassword: ['', Validators.required],
-        confirmNewPassword: ['', Validators.required]
+        confirmNewPassword: ['', Validators.required],
       }),
-      email: ['', [Validators.required, Validators.email]],
-      name: this.formBuilder.group({
-        firstName: ['', Validators.required],
-        surname: ['', Validators.required]
-      })
+      // Other form controls go here if any
     });
   }
 
@@ -41,11 +37,8 @@ export class UserSettingsComponent implements OnInit {
     if (this.userSettingsForm.valid) {
       const userSettings: UserSettings = {
         id: 1, // replace with the actual user ID
-        username: 'username', // replace with the actual username
         password: this.userSettingsForm.get('password.newPassword')?.value,
-        email: this.userSettingsForm.get('email')?.value,
-        firstName: this.userSettingsForm.get('name.firstName')?.value,
-        surname: this.userSettingsForm.get('name.surname')?.value
+
       };
 
       this.userSettingsService.updateUserSettings(userSettings)
