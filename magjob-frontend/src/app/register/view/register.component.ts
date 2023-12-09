@@ -57,6 +57,7 @@ export class RegisterComponent {
       this.RegisterService.register(this.registerModel).subscribe(
         (response) => {
           console.log('Registration successful:', response);
+          localStorage.clear();
           this.router.navigate(['/login']);
           // Add any additional logic after a successful registration
         },
