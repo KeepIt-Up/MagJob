@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UserModel } from '../../model/user';
+import { User } from '../../model/user';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { UserModel } from '../../model/user';
 export class UserProfileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   userForm!: FormGroup;
-  userData: UserModel | null = null;
+  userData: User | null = null;
   userId!: number;
   originalFormData: any;
   constructor(
@@ -30,7 +30,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.userId = params['id'];
 
-      this.userService.getUserData(this.userId).subscribe((data: UserModel) => {
+      this.userService.getUserData(this.userId).subscribe((data: User) => {
         this.userData = { ...data };
         this.originalFormData = { ...this.userData };
 
