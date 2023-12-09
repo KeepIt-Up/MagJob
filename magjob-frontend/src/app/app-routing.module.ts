@@ -15,8 +15,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'user/:id', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'user/:userId/settings', component: UserSettingsComponent, canActivate: [AuthGuard] },
-  { path: 'create-organization', component: OrganizationCreationComponent},
-  { path: 'noorganization', component: NoOrganizationComponent}
+  { path: 'create-organization', component: OrganizationCreationComponent, canActivate: [AuthGuard]},
+  { path: 'noorganization', component: NoOrganizationComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
