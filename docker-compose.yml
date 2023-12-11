@@ -4,10 +4,10 @@ services:
   magjob-backend:
     image: magjob-backend:0.0.1
     restart: always
-    #depends_on:
-    #  - db
-    #environment:
-    #  - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+    depends_on:
+      - pgadmin
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
 
   magjob-frontend:
     image: magjob-frontend:0.0.1
@@ -25,11 +25,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
+      - ./test-data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
-      - POSTGRES_DB=db
+      - POSTGRES_DB=postgres
 
   pgadmin:
     image: dpage/pgadmin4:2023-11-20-2
@@ -40,7 +40,9 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
-      - ~/apps/pgadmin:/var/lib/pgadmin/data
+      - ./test-data/pgadmin:/var/lib/pgadmin/data
+    depends_on:
+      - db
 
   prometheus:
     image: prom/prometheus:v2.48.0
