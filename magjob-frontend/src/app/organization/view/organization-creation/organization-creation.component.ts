@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {Organization} from "../../model/organization";
+import { OrganizationCreation } from "../../model/organization-creation";
 import { OrganizationCreationService } from '../../service/organization-creation.service';
 
 @Component({
@@ -10,10 +10,14 @@ import { OrganizationCreationService } from '../../service/organization-creation
 })
 export class OrganizationCreationComponent {
 
-  organizationModel: Organization = new Organization('');
+  organizationModel: OrganizationCreation = {
+    name: '',
+    profileBannerUrl: '',
+    user: 0
+  };
 
   organizationForm: FormGroup;
-  selectedType: string = '';
+  selectedBannerUrl: string = '';
 
   constructor(private organizationService: OrganizationCreationService, private fb: FormBuilder) {
     this.organizationForm = this.fb.group({
@@ -22,25 +26,26 @@ export class OrganizationCreationComponent {
   }
 
   onSubmit() {
-    const nameControl = this.organizationForm.get('name');
+    const { name } = this.organizationForm.value;
 
-    if (nameControl && nameControl.valid) {
-      this.organizationModel.name = nameControl.value;
-      const type = this.selectedType;
+    if (this.organizationForm.valid) {
+      this.organizationModel.name = name;
+      this.organizationModel.profileBannerUrl = ""; //this.selectedBannerUrl
+      this.organizationModel.user = localStorage.getItem("User");
+
 
       this.organizationService.createOrganization(this.organizationModel).subscribe(
-          (response) => {
-            console.log('Organization created successfully:', response);
-          },
-          (error) => {
-            console.error('Error creating organization:', error);
-          }
+        (response) => {
+          console.log('Organization created successfully:', response);
+        },
+        (error) => {
+          console.error('Error creating organization:', error);
+        }
       );
     }
   }
 
-
-  selectType(type: string) {
-    this.selectedType = type;
+  selectBannerUrl(url: string) {
+    this.selectedBannerUrl = url;
   }
 }
