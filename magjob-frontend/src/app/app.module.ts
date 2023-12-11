@@ -21,6 +21,8 @@ import { OrganizationCreationComponent } from './organization/view/organization-
 import { NoOrganizationComponent } from './organization/view/no-organization/no-organization.component';
 import { UserInvitationsComponent } from './invitations/view/user-invitations/user-invitations.component';
 
+import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,9 @@ import { UserInvitationsComponent } from './invitations/view/user-invitations/us
     UserOrganizationComponent,
     OrganizationCreationComponent,
     NoOrganizationComponent,
-    UserInvitationsComponent
+    UserInvitationsComponent,
+
+    ListMembersComponent
   ],
   imports: [
     BrowserModule,
