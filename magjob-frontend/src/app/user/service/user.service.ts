@@ -1,27 +1,30 @@
 import { Organization } from './../../organization/model/organization';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { UserModel } from '../model/user';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../model/user';
 import { OrganizationService } from 'src/app/organization/service/organization.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private currentUser: UserModel | null = null;
+  private currentUser: User | null = null;
   organizations: Organization[] = [];
+  private apiUrl = '/api/users';
 
-  constructor(private organizationService: OrganizationService)
+  constructor(private organizationService: OrganizationService,
+    private http: HttpClient)
   {
 
   }
 
-  setCurrentUser(user: UserModel): void {
+  setCurrentUser(user: User): void {
     this.currentUser = user;
     localStorage.setItem("User",this.currentUser.id.toString());
   }
 
-  getCurrentUser(): UserModel | null {
+  getCurrentUser(): User | null {
     return this.currentUser;
   }
 
@@ -35,7 +38,7 @@ export class UserService {
     this.organizationService.getUserOrganizations(userId).subscribe(
       (organizations: Organization[]) => {
         this.organizations = organizations;
-        console.log(this.organizations);
+        //console.log(this.organizations);
       },
       (error) => {
         console.error('Error fetching organizations:', error);
@@ -48,5 +51,17 @@ export class UserService {
     else{
       return true;
     }
+  }
+
+  getUserData(userId: number): Observable<any>
+  {
+    const url = `${this.apiUrl}/${userId}`;
+    return this.http.get(url);
+  }
+
+  updateUserData(userId: number, userData: User): Observable<any>
+  {
+    const url = `${this.apiUrl}/${userId}`;
+    return this.http.patch(url, userData);
   }
 }
