@@ -27,7 +27,7 @@ export class UserSettingsComponent implements OnInit {
         Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,}$'),
         Validators.required
       ]],
-      confirmNewPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmNewPassword: ['', [Validators.required]],
     }, {
       validator: this.passwordMatchValidator.bind(this)
     });
@@ -41,6 +41,7 @@ export class UserSettingsComponent implements OnInit {
     if (newPassword?.value !== confirmNewPassword?.value) {
       // If passwords don't match, set an error
       confirmNewPassword?.setErrors({ 'passwordMismatch': true });
+      return { 'passwordMismatch': true };
     } else {
       // If passwords match, clear the error
       confirmNewPassword?.setErrors(null);
