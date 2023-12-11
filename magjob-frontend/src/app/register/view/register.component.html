@@ -6,55 +6,55 @@
       <h2>Register</h2>
       <!--Email-->
       <div
-        *ngIf="registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)"
-        class="inputName">
-        <div *ngIf="registerForm.controls.email.errors?.['required']">Email is required.</div>
-        <div *ngIf="registerForm.controls.email.errors?.['email']">Email must be correct.</div>
+        *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+        class="inputError">
+        <div *ngIf="registerForm.get('email')?.hasError('required')">Email is required.</div>
+        <div *ngIf="registerForm.get('email')?.hasError('email')">Email must be correct.</div>
       </div>
       <input type="email" id="email" aria-describedby="emailHelp" placeholder="Email" formControlName="email"
-        [(ngModel)]="registerModel.email" required />
+        />
       <!--Password-->
       <div
-        *ngIf="registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)"
-        class="inputName">
-        <div *ngIf="registerForm.controls.password.errors?.['required']">Password is required.</div>
-        <div *ngIf="registerForm.controls.password.errors?.['pattern']">Password must contain minimum 5 characters, at
-          least one uppercase letter, one lowercase letter, one number and one special character.</div>
+        *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+        class="inputError">
+        <div *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</div>
+        <div *ngIf="registerForm.get('password')?.hasError('pattern')">Password must contain minimum 5 characters,<br> at
+          least one uppercase letter,<br> one lowercase letter, one number and one special character.</div>
       </div>
       <input type="password" id="password" placeholder="Password" formControlName="password"
-        [(ngModel)]="registerModel.password" required />
+         />
       
       <!--passwordConfirmation-->
       <div
-        *ngIf="registerForm.controls.passwordConfirmation.invalid && (registerForm.controls.passwordConfirmation.dirty || registerForm.controls.passwordConfirmation.touched)"
-        class="inputName">
-        <div *ngIf="registerForm.controls.passwordConfirmation.errors?.['required']">Password confirmation is required.
+        *ngIf="registerForm.get('passwordConfirmation')?.invalid && (registerForm.get('passwordConfirmation')?.dirty || registerForm.get('passwordConfirmation')?.touched)"
+        class="inputError">
+        <div *ngIf="registerForm.get('passwordConfirmation')?.hasError('required')">Password confirmation is required.
         </div>
-        <div *ngIf="registerForm.controls.passwordConfirmation.errors?.['doNotMatch']">Password confirmation differs
+        <div *ngIf="registerForm.hasError('passwordMismatch')">Password confirmation differs
           from password.</div>
       </div>
       <input type="password" id="passwordConfirmation" placeholder="Repeat Password"
-        formControlName="passwordConfirmation" [(ngModel)]="passwordConfirmation" required />
+        formControlName="passwordConfirmation"/>
       
       <!--Firstname-->
       <div
-        *ngIf="registerForm.controls.firstname.invalid && (registerForm.controls.firstname.dirty || registerForm.controls.firstname.touched)"
-        class="inputName">
-        <div *ngIf="registerForm.controls.firstname.errors?.['required']">First name is required.</div>
-        <div *ngIf="registerForm.controls.firstname.errors?.['pattern']">First name must be alphanumeric.</div>
+        *ngIf="registerForm.get('firstname')?.invalid && (registerForm.get('firstname')?.dirty || registerForm.get('firstname')?.touched)"
+        class="inputError">
+        <div *ngIf="registerForm.get('firstname')?.errors?.['required']">First name is required.</div>
+        <div *ngIf="registerForm.get('firstname')?.errors?.['pattern']">First name must be alphanumeric.</div>
       </div>
       <input type="text" id="firstname" placeholder="Firstname" formControlName="firstname"
-        [(ngModel)]="registerModel.firstname" required />
+        />
       
       <!--Lastname-->
       <div
-        *ngIf="registerForm.controls.surname.invalid && (registerForm.controls.surname.dirty || registerForm.controls.surname.touched)"
-        class="inputName">
-        <div *ngIf="registerForm.controls.surname.errors?.['required']">Last name is required.</div>
-        <div *ngIf="registerForm.controls.surname.errors?.['pattern']">Last name must be alphanumeric.</div>
+        *ngIf="registerForm.get('lastname')?.invalid && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)"
+        class="inputError">
+        <div *ngIf="registerForm.get('lastname')?.errors?.['required']">Last name is required.</div>
+        <div *ngIf="registerForm.get('lastname')?.errors?.['pattern']">Last name must be alphanumeric.</div>
       </div>
-      <input type="text" id="surname" placeholder="Lastname" formControlName="surname"
-        [(ngModel)]="registerModel.lastname" required />
+      <input type="text" id="lastname" placeholder="Lastname" formControlName="lastname"
+        />
       
 
       <button class="confirmButton">Register</button>

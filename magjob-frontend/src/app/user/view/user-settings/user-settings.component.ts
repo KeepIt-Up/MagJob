@@ -1,9 +1,8 @@
-// src/app/user-settings/user-settings.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { UserSettingsService } from '../../service/user-settings.service';
-import { UserSettings } from '../../model/user-settings';
 import { ActivatedRoute } from '@angular/router';
+import { PasswordChange } from '../../model/password-change';
 
 @Component({
   selector: 'app-user-settings',
@@ -11,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./user-settings.component.css']
 })
 export class UserSettingsComponent implements OnInit {
-  userSettingsForm: FormGroup = this.formBuilder.group({});
+  passwordForm!: FormGroup;
   userId: number;
 
   constructor(
@@ -23,28 +22,44 @@ export class UserSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userSettingsForm = this.formBuilder.group({
-      password: this.formBuilder.group({
-        currentPassword: ['', Validators.required],
-        newPassword: ['', Validators.required],
-        confirmNewPassword: ['', Validators.required],
-      }),
-      // Other form controls go here if any
+    this.passwordForm = this.formBuilder.group({
+      newPassword: ['', [
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,}$'),
+        Validators.required
+      ]],
+      confirmNewPassword: ['', [Validators.required]],
+    }, {
+      validator: this.passwordMatchValidator.bind(this)
     });
   }
 
-  onSubmit(): void {
-    if (this.userSettingsForm.valid) {
-      const userSettings: UserSettings = {
-        id: 1, // replace with the actual user ID
-        password: this.userSettingsForm.get('password.newPassword')?.value,
+  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const newPassword = control.get('newPassword');
+    const confirmNewPassword = control.get('confirmNewPassword');
 
+    // Check if both password and confirmPassword controls have values and they match
+    if (newPassword?.value !== confirmNewPassword?.value) {
+      // If passwords don't match, set an error
+      confirmNewPassword?.setErrors({ 'passwordMismatch': true });
+      return { 'passwordMismatch': true };
+    } else {
+      // If passwords match, clear the error
+      confirmNewPassword?.setErrors(null);
+    }
+
+    return null;
+  }
+
+  onSubmit(): void {
+    if (this.passwordForm.valid) {
+      const passwordChange: PasswordChange = {
+        password: this.passwordForm.get('newPassword')!.value
       };
 
-      this.userSettingsService.updateUserSettings(userSettings)
-        .subscribe(updatedUserSettings => {
+      this.userSettingsService.updateUserPassword(passwordChange, this.userId)
+        .subscribe(updatedUserPassword => {
           // Handle successful update
-          console.log('User settings updated:', updatedUserSettings);
+          console.log('User settings updated:', updatedUserPassword);
         });
     }
   }
