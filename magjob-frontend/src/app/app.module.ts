@@ -20,7 +20,7 @@ import { UserOrganizationComponent } from './user/view/user-organization/user-or
 import { OrganizationCreationComponent } from './organization/view/organization-creation/organization-creation.component';
 import { NoOrganizationComponent } from './organization/view/no-organization/no-organization.component';
 import { UserInvitationsComponent } from './invitations/view/user-invitations/user-invitations.component';
-
+import { OrganizationMembersComponent } from './organization-members/view/organization-members/organization-members.component';
 import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
 
 @NgModule({
@@ -39,7 +39,7 @@ import { ListMembersComponent } from './organization-members/view/list-members/l
     OrganizationCreationComponent,
     NoOrganizationComponent,
     UserInvitationsComponent,
-
+    OrganizationMembersComponent,
     ListMembersComponent
   ],
   imports: [
