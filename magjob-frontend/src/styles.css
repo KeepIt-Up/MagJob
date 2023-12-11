@@ -82,6 +82,16 @@ input[type=tel] {
     line-height: normal;
     text-transform: uppercase;
 }
+.inputError {
+    color: var(--Error, #FF1C1C);
+    /* OTHER/Input Name */
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+}
 
 label {
     display: flex;
