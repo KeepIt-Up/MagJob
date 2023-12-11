@@ -11,9 +11,8 @@ export class OrganizationCreationService {
 
   constructor(private http: HttpClient) {}
 
-  createOrganization(OrganizationData: Organization): Observable<any> {
+  createOrganization(organizationData: Organization): Observable<any> {
     const registrationEndpoint = this.apiUrl;
-
-    return this.http.post(registrationEndpoint, OrganizationData);
+    return this.http.post(registrationEndpoint, organizationData);
   }
 }

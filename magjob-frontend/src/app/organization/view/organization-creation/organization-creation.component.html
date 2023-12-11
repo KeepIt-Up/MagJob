@@ -1,16 +1,16 @@
 <div class="organization-form">
-    <h2>Create Organization</h2>
-    <form [formGroup]="organizationForm" (ngSubmit)="onSubmit()">
-        <label for="name">Name:</label>
-        <input type="text" id="name" formControlName="name" required>
+  <h2>Create Organization</h2>
+  <form [formGroup]="organizationForm" (ngSubmit)="onSubmit()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name" required>
 
-        <label>Type:</label>
-        <div class="type-options">
-            <button type="button" (click)="selectType('Option 1')" [class.selected]="selectedType === 'Option 1'">Option 1</button>
-            <button type="button" (click)="selectType('Option 2')" [class.selected]="selectedType === 'Option 2'">Option 2</button>
-            <button type="button" (click)="selectType('Option 3')" [class.selected]="selectedType === 'Option 3'">Option 3</button>
-        </div>
+    <label>Profile Banner URL:</label>
+    <div class="banner-options">
+      <button type="button" (click)="selectBannerUrl('url1')" [class.selected]="selectedBannerUrl === 'url1'">url1</button>
+      <button type="button" (click)="selectBannerUrl('url2')" [class.selected]="selectedBannerUrl === 'url2'">url2</button>
+      <button type="button" (click)="selectBannerUrl('url3')" [class.selected]="selectedBannerUrl === 'url3'">url3</button>
+    </div>
 
-        <button type="submit" [disabled]="organizationForm.invalid">Create</button>
-    </form>
+    <button type="submit" [disabled]="organizationForm.invalid">Create</button>
+  </form>
 </div>
