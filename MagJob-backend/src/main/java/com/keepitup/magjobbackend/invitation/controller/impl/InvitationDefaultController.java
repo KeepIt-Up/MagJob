@@ -5,10 +5,12 @@ import com.keepitup.magjobbackend.invitation.dto.GetInvitationResponse;
 import com.keepitup.magjobbackend.invitation.dto.GetInvitationsResponse;
 import com.keepitup.magjobbackend.invitation.dto.PostInvitationRequest;
 import com.keepitup.magjobbackend.invitation.entity.Invitation;
+import com.keepitup.magjobbackend.invitation.entity.InvitationId;
 import com.keepitup.magjobbackend.invitation.function.InvitationToResponseFunction;
 import com.keepitup.magjobbackend.invitation.function.InvitationsToResponseFunction;
 import com.keepitup.magjobbackend.invitation.function.RequestToInvitationFunction;
 import com.keepitup.magjobbackend.invitation.service.api.InvitationService;
+import com.keepitup.magjobbackend.user.entity.User;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,8 +45,8 @@ public class InvitationDefaultController implements InvitationController {
 
 
     @Override
-    public GetInvitationResponse getInvitation(BigInteger id) {
-        return service.find(id)
+    public GetInvitationResponse getInvitation(BigInteger userId, BigInteger organizationId) {
+        return service.findByUserAndOrganization(userId, organizationId)
                 .map(invitationToResponse)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
@@ -64,28 +67,24 @@ public class InvitationDefaultController implements InvitationController {
 
     @Override
     public GetInvitationResponse sendInvitation(PostInvitationRequest request) {
-
-        List<Invitation> activeInvitations = service.findAllByUserAndOrganization(request.getUser(), request.getOrganization())
-                .orElse(List.of())
-                .stream()
-                .filter(Invitation::getIsActive)
-                .toList();
-
-        if (!activeInvitations.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An active invitation already exists.");
+        Optional<Invitation> invitation = service.findByUserAndOrganization(request.getUser(), request.getOrganization());
+        if (invitation.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        else {
+            service.create(requestToInvitation.apply(request));
         }
 
-        Invitation invitation = requestToInvitation.apply(request);
-        service.create(invitation);
-
-        return invitationToResponse.apply(invitation);
+        return service.findByUserAndOrganization(request.getUser(), request.getOrganization())
+                .map(invitationToResponse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public void deleteInvitation(BigInteger id) {
-        service.find(id)
+    public void deleteInvitation(BigInteger userId, BigInteger organizationId) {
+        service.findByUserAndOrganization(userId, organizationId)
                 .ifPresentOrElse(
-                        invitation -> service.delete(id),
+                        invitation -> service.delete(userId, organizationId),
                         () -> {
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                         }

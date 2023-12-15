@@ -14,7 +14,8 @@ public class InvitationsToResponseFunction implements Function<List<Invitation>,
         return GetInvitationsResponse.builder()
                 .invitations(entities.stream()
                         .map(invitation -> GetInvitationsResponse.Invitation.builder()
-                                .id(invitation.getId())
+                                .userId(invitation.getUser().getId())
+                                .organizationId(invitation.getOrganization().getId())
                                 .build())
                         .toList())
                 .build();

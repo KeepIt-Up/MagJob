@@ -44,8 +44,6 @@ public class GetInvitationResponse {
 
     }
 
-    private BigInteger id;
-
     private Boolean isActive;
 
     private ZonedDateTime dateOfCreation;
