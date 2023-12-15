@@ -10,12 +10,14 @@ import java.math.BigInteger;
 
 public interface InvitationController {
 
-    @GetMapping("/api/invitations/{id}")
+    @GetMapping("/api/invitations/{userId}/{organizationId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     GetInvitationResponse getInvitation(
-            @PathVariable("id")
-            BigInteger id
+            @PathVariable("userId")
+            BigInteger userId,
+            @PathVariable("organizationId")
+            BigInteger organizationId
     );
 
     @GetMapping("/api/users/{userId}/invitations")
@@ -42,11 +44,13 @@ public interface InvitationController {
             PostInvitationRequest request
     );
 
-    @DeleteMapping("/api/invitations/{id}")
+    @DeleteMapping("/api/invitations/{userId}/{organizationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteInvitation(
-            @PathVariable("id")
-            BigInteger id
+            @PathVariable("userId")
+            BigInteger userId,
+            @PathVariable("organizationId")
+            BigInteger organizationId
     );
 
 }

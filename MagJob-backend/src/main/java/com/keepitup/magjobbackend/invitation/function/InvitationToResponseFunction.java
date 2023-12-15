@@ -11,7 +11,6 @@ public class InvitationToResponseFunction implements Function<Invitation, GetInv
     @Override
     public GetInvitationResponse apply(Invitation invitation) {
         return GetInvitationResponse.builder()
-                .id(invitation.getId())
                 .isActive(invitation.getIsActive())
                 .dateOfCreation(invitation.getDateOfCreation())
                 .user(GetInvitationResponse.User.builder()

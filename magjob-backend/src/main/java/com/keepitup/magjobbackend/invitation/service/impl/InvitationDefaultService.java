@@ -31,11 +31,6 @@ public class InvitationDefaultService implements InvitationService {
 
 
     @Override
-    public Optional<Invitation> find(BigInteger id) {
-        return invitationRepository.findById(id);
-    }
-
-    @Override
     public Optional<List<Invitation>> findAllByUser(BigInteger userId) {
         return userRepository.findById(userId)
                 .map(invitationRepository::findAllByUser);
@@ -60,10 +55,8 @@ public class InvitationDefaultService implements InvitationService {
     }
 
     @Override
-    public Optional<List<Invitation>> findAllByUserAndOrganization(BigInteger userId, BigInteger organizationId) {
-        return organizationRepository.findById(organizationId)
-                .flatMap(organization -> userRepository.findById(userId)
-                        .map(user -> invitationRepository.findAllByUserAndOrganization(user, organization)));
+    public Optional<Invitation> findByUserAndOrganization(BigInteger userId, BigInteger organizationId) {
+        return invitationRepository.findByUser_IdAndOrganization_Id(userId, organizationId);
     }
 
     @Override
@@ -79,15 +72,8 @@ public class InvitationDefaultService implements InvitationService {
     }
 
     @Override
-    public Boolean checkIfActive(BigInteger id) {
-        return invitationRepository.findById(id)
-                .map(Invitation::getIsActive)
-                .orElse(null);
-    }
-
-    @Override
-    public void delete(BigInteger id) {
-        invitationRepository.findById(id).ifPresent(invitationRepository::delete);
+    public void delete(BigInteger userId, BigInteger organizationId) {
+        invitationRepository.findByUser_IdAndOrganization_Id(userId, organizationId).ifPresent(invitationRepository::delete);
     }
 
     @Override

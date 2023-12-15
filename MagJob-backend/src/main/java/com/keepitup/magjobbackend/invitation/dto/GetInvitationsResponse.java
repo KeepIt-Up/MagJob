@@ -24,7 +24,8 @@ public class GetInvitationsResponse {
     @EqualsAndHashCode
     public static class Invitation {
 
-        private BigInteger id;
+        private BigInteger userId;
+        private BigInteger organizationId;
 
     }
 

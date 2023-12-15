@@ -23,7 +23,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private static final AntPathRequestMatcher[] permitAllList = {
             new AntPathRequestMatcher("/api/users", "POST"),
-            new AntPathRequestMatcher("/api/users/login"),
+            new AntPathRequestMatcher("/api/users/login")
     };
 
     private static final AntPathRequestMatcher[] authenticatedList = {
@@ -41,7 +41,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/api/invitations"),
             new AntPathRequestMatcher("/api/invitations/{id}"),
             new AntPathRequestMatcher("/api/organizations/{organizationId}/invitations"),
-            new AntPathRequestMatcher("/api/users/{userId}/invitations")
+            new AntPathRequestMatcher("/api/users/{userId}/invitations"),
+            new AntPathRequestMatcher("/api/invitations/{userId}/{organizationId}")
     };
 
     private final JwtRequestFilter jwtRequestFilter;
