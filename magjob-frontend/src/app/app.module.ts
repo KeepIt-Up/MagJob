@@ -10,7 +10,18 @@ import { LoginComponent } from './login/view/login.component';
 import { RegisterComponent } from './register/view/register.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { UserProfileComponent } from './user/view/user-profile/user-profile.component';
+import { UserSettingsComponent } from './user/view/user-settings/user-settings.component';
+import { OrganizationHomePageComponent } from './organization/view/organization-home-page/organization-home-page.component';
+import { OrganizationSettingsComponent } from './organization/view/organization-settings/organization-settings.component';
+import { JwtInterceptor } from './jwt/jwt.interceptor';
+import { UserOrganizationComponent } from './user/view/user-organization/user-organization.component';
+import { OrganizationCreationComponent } from './organization/view/organization-creation/organization-creation.component';
+import { NoOrganizationComponent } from './organization/view/no-organization/no-organization.component';
+import { UserInvitationsComponent } from './invitations/view/user-invitations/user-invitations.component';
+import { OrganizationMembersComponent } from './organization-members/view/organization-members/organization-members.component';
+import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
 
 @NgModule({
   declarations: [
@@ -19,21 +30,34 @@ import { HttpClientModule } from '@angular/common/http';
     NavMenuComponent,
     LoginComponent,
     RegisterComponent,
-    FooterComponent
+    FooterComponent,
+    UserProfileComponent,
+    UserSettingsComponent,
+    OrganizationHomePageComponent,
+    OrganizationSettingsComponent,
+    UserOrganizationComponent,
+    OrganizationCreationComponent,
+    NoOrganizationComponent,
+    UserInvitationsComponent,
+    OrganizationMembersComponent,
+    ListMembersComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
     ]),
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

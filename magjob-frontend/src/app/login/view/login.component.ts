@@ -1,7 +1,9 @@
-import { LoginService } from '../service/login.service';
+import { AuthService } from '../../jwt/auth.service';
 import { Component } from '@angular/core';
 import { Login } from '../model/login';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/user/service/user.service';
 
 
 @Component({
@@ -28,19 +30,26 @@ export class LoginComponent {
 
   loginModel: Login = new Login('', ''); // Initialize with empty values
 
-  constructor(private loginService: LoginService) {}
+  constructor(private authService: AuthService, private router: Router, private userService: UserService) {}
 
     submitApplication() {
       if (!(this.loginForm.invalid && (this.loginForm.dirty || this.loginForm.touched)) && this.loginModel.email && this.loginModel.password) {
-        // Call the login service to verify the user's credentials
-        this.loginService.login(this.loginModel).subscribe(
+        this.authService.login(this.loginModel).subscribe(
           (response) => {
-            console.log('Login successful:', response);
-            // Add any additional logic after a successful login
+            localStorage.setItem('access_token', response.jwt);
+            this.userService.setCurrentUser(response.user);
+            if(this.userService.belongToAnyOrganization() == false)
+            {
+              this.router.navigate(['/noorganization']);
+            }
+            else{
+              const userId = response.user.id;
+              this.router.navigate(['/user', userId]);
+            }
+            
           },
           (error) => {
             console.error('Login failed:', error);
-            // Handle login failure (show error message, etc.)
           }
         );
       }
