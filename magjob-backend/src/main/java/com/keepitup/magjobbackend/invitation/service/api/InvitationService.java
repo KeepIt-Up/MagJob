@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.List;
 
 public interface InvitationService {
-    Optional<Invitation> find(BigInteger id);
 
     Optional<List<Invitation>> findAllByUser(BigInteger userId);
 
@@ -19,13 +18,13 @@ public interface InvitationService {
 
     Optional<List<Invitation>> findAllByOrganizationAndIsActive(BigInteger organizationId, Boolean isActive);
 
+    Optional<Invitation> findByUserAndOrganization(BigInteger userId, BigInteger organizationId);
+
     List<Invitation> findAllByDateOfCreation(ZonedDateTime dateOfCreation);
 
     void create(Invitation invitation);
 
-    Boolean checkIfActive(BigInteger id);
-
-    void delete(BigInteger id);
+    void delete(BigInteger userId, BigInteger organizationId);
 
     void update(Invitation invitation);
 }
