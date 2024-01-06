@@ -9,7 +9,7 @@ import { OrganizationService } from 'src/app/organization/service/organization.s
   providedIn: 'root',
 })
 export class UserService {
-  private currentUser: User | null = null;
+  private currentUserId: number | null = null;
   organizations: Organization[] = [];
   private apiUrl = '/api/users';
 
@@ -19,17 +19,19 @@ export class UserService {
 
   }
 
-  setCurrentUser(user: User): void {
-    this.currentUser = user;
-    localStorage.setItem("User",this.currentUser.id.toString());
+  setCurrentUserId(user: User): void {
+    this.currentUserId = user.id;
+    localStorage.setItem("User",this.currentUserId.toString());
   }
 
-  getCurrentUser(): User | null {
-    return this.currentUser;
+  getCurrentUserId(): number | null {
+    if(this.currentUserId == null)
+      this.currentUserId =  parseInt(localStorage.getItem("User") || '0')
+    return this.currentUserId;
   }
 
   clearCurrentUser(): void {
-    this.currentUser = null;
+    this.currentUserId = null;
   }
 
   belongToAnyOrganization(): boolean

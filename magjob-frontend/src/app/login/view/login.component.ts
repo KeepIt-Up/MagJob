@@ -37,7 +37,7 @@ export class LoginComponent {
         this.authService.login(this.loginModel).subscribe(
           (response) => {
             localStorage.setItem('access_token', response.jwt);
-            this.userService.setCurrentUser(response.user);
+            this.userService.setCurrentUserId(response.user);
             if(this.userService.belongToAnyOrganization() == false)
             {
               this.router.navigate(['/noorganization']);
