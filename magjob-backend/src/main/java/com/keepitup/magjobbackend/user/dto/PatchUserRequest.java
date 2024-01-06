@@ -2,6 +2,8 @@ package com.keepitup.magjobbackend.user.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -15,5 +17,7 @@ public class PatchUserRequest {
     private String firstname;
     private String lastname;
     private String phoneNumber;
+
+    private LocalDate birthDate;
 
 }
