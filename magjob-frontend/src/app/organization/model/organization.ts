@@ -1,9 +1,5 @@
-export class Organization {
+export interface Organization {
+    id: number;
     name: string;
     //type: string;
-
-    constructor(name: string) {
-        this.name = name;
-        //this.type = type;
-    }
 }

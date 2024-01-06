@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Organization} from "../model/organization";
+import { OrganizationCreation } from '../model/organization-creation';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class OrganizationCreationService {
 
   constructor(private http: HttpClient) {}
 
-  createOrganization(organizationData: Organization): Observable<any> {
+  createOrganization(organizationData: OrganizationCreation): Observable<any> {
     const registrationEndpoint = this.apiUrl;
     return this.http.post(registrationEndpoint, organizationData);
   }

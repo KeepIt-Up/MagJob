@@ -1,14 +1,15 @@
+import { Organization } from './../model/organization';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Organization } from '../model/organization';
 import { Member } from '../model/member';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganizationService {
+  private currentOrganization: Organization | null = null;
 
   private apiUrl = '/api/organizations';
   constructor(private http: HttpClient) { }
@@ -25,5 +26,18 @@ export class OrganizationService {
   {
     //TODO connect with endpoint
     return this.http.get<Member[]>(`${this.apiUrl}/${organizationId}/members`);
+  }
+
+  getCurrentOrganization(): Organization | null {
+    return this.currentOrganization;
+  }
+
+  setCurrentUser(organization: Organization): void {
+    this.currentOrganization = organization;
+    localStorage.setItem("Organization",this.currentOrganization.id.toString());
+  }
+
+  clearCurrentOrganization(): void {
+    this.currentOrganization = null;
   }
 }
