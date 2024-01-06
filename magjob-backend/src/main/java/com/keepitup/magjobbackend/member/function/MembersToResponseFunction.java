@@ -16,6 +16,8 @@ public class MembersToResponseFunction implements Function<List<Member>, GetMemb
                         .map(member -> GetMembersResponse.Member.builder()
                                 .id(member.getId())
                                 .pseudonym(member.getPseudonym())
+                                .firstName(member.getUser().getFirstname())
+                                .lastName(member.getUser().getLastname())
                                 .build())
                         .toList())
                 .build();
