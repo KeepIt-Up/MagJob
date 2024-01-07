@@ -9,7 +9,7 @@ import { Member } from '../model/member';
   providedIn: 'root'
 })
 export class OrganizationService {
-  private currentOrganization: Organization | null = null;
+  private currentOrganizationId: number | null = null;
 
   private apiUrl = '/api/organizations';
   constructor(private http: HttpClient) { }
@@ -18,26 +18,30 @@ export class OrganizationService {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
-  getUserOrganizations(userId: number): Observable<Organization[]> {
-    return this.http.get<Organization[]>(`${this.apiUrl}/users/${userId}`);
+  getUserOrganizations(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users/${userId}`);
   }
 
-  getMembers(organizationId: number): Observable<Member[]>
+  getMembers(organizationId: number): Observable<any>
   {
     //TODO connect with endpoint
-    return this.http.get<Member[]>(`${this.apiUrl}/${organizationId}/members`);
+    return this.http.get<any>(`${this.apiUrl}/${organizationId}/members`);
   }
 
-  getCurrentOrganization(): Organization | null {
-    return this.currentOrganization;
+  getCurrentOrganizationId(): number | null {
+    if(this.currentOrganizationId == null)
+    {
+      this.currentOrganizationId =  parseInt(localStorage.getItem("Organization") || '0');
+    }
+    return this.currentOrganizationId;
   }
 
-  setCurrentUser(organization: Organization): void {
-    this.currentOrganization = organization;
-    localStorage.setItem("Organization",this.currentOrganization.id.toString());
+  setCurrentOrganizationId(organization: Organization): void {
+    this.currentOrganizationId = organization.id;
+    localStorage.setItem("Organization",this.currentOrganizationId.toString());
   }
 
   clearCurrentOrganization(): void {
-    this.currentOrganization = null;
+    this.currentOrganizationId = null;
   }
 }

@@ -34,26 +34,32 @@ export class UserService {
     this.currentUserId = null;
   }
 
-  belongToAnyOrganization(): boolean
-  {
-    const userId: number = parseInt(localStorage.getItem("User") || '0', 10);
+
+belongToAnyOrganization(): Observable<boolean> {
+  const userId: number = parseInt(localStorage.getItem("User") || '0', 10);
+
+  return new Observable<boolean>((observer) => {
     this.organizationService.getUserOrganizations(userId).subscribe(
       (organizations: Organization[]) => {
         this.organizations = organizations;
-        //console.log(this.organizations);
+
+        if (this.organizations.length === 0) {
+          console.log(this.organizations.length);
+          observer.next(false);
+        } else {
+          observer.next(true);
+        }
+
+        observer.complete();
       },
       (error) => {
         console.error('Error fetching organizations:', error);
+        observer.error(error);
       }
     );
-    if(this.organizations.length == 0)
-    {
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
+  });
+}
+
 
   getUserData(userId: number): Observable<any>
   {

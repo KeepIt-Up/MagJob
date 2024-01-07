@@ -13,7 +13,7 @@ export class OrganizatonNavComponent {
   constructor(private authService: AuthService, private organizationService: OrganizationService) {}
 
   getCurrentOrganizationId(): number | null {
-    const currentOrganization = this.organizationService.getCurrentOrganization();
-    return currentOrganization ? currentOrganization.id : null;
+    const currentOrganization = this.organizationService.getCurrentOrganizationId();
+    return currentOrganization ? currentOrganization : null;
   }
 }

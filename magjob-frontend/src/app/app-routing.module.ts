@@ -10,6 +10,8 @@ import { AuthGuard } from './jwt/auth.guard';
 import { OrganizationCreationComponent } from './organization/view/organization-creation/organization-creation.component';
 import { OrganizationComponent } from './organization/organization/organization.component';
 import { OrganizationHomePageComponent } from './organization/view/organization-home-page/organization-home-page.component';
+import { ChooseOrganizationComponent } from './organization/view/choose-organization/choose-organization.component';
+import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -19,13 +21,14 @@ const routes: Routes = [
   { path: 'user/:userId/settings', component: UserSettingsComponent, canActivate: [AuthGuard] },
   { path: 'create-organization', component: OrganizationCreationComponent, canActivate: [AuthGuard] },
   { path: 'noorganization', component: NoOrganizationComponent, canActivate: [AuthGuard] },
+  { path: 'chooseorganization', component: ChooseOrganizationComponent, canActivate: [AuthGuard] },
   {
     path: 'organization/:id',
     component: OrganizationComponent,
     children: [
       { path: 'home', component: OrganizationHomePageComponent },
       { path: 'schedule', component: OrganizationHomePageComponent },
-      { path: 'members', component: OrganizationHomePageComponent },
+      { path: 'members', component: ListMembersComponent },
       { path: 'settings', component: OrganizationHomePageComponent },
       { path: 'tasks', component: OrganizationHomePageComponent },
       { path: 'documents', component: OrganizationHomePageComponent }

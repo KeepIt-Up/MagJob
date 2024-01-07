@@ -24,6 +24,7 @@ import { OrganizationMembersComponent } from './organization-members/view/organi
 import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
 import { OrganizatonNavComponent } from './organization/organizaton-nav/organizaton-nav.component';
 import { OrganizationComponent } from './organization/organization/organization.component';
+import { ChooseOrganizationComponent } from './organization/view/choose-organization/choose-organization.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { OrganizationComponent } from './organization/organization/organization.
     OrganizationMembersComponent,
     ListMembersComponent,
     OrganizatonNavComponent,
-    OrganizationComponent
+    OrganizationComponent,
+    ChooseOrganizationComponent
   ],
   imports: [
     BrowserModule,
