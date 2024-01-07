@@ -1,5 +1,7 @@
-<div *ngFor="let invitation of invitations">
-    <p>{{ invitation.organizationName }}</p>
-    <button (click)="accept()" >Accept</button>
-    <button (click)="deny()" >Deny</button>
+
+<div class="Invitation" *ngFor="let invitation of invitations">
+    <div class="organiationName">{{ invitation.organizationId }}</div>
+    <button (click)="accept(invitation)" >Accept</button>
+    <button class="gray" (click)="deny(invitation)" >Deny</button>
   </div>
+

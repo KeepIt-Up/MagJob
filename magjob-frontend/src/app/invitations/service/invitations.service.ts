@@ -7,12 +7,12 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class InvitationsService {
-  readonly apiUrl = '/api/users/invitations';
+  readonly apiUrl = '/api/users';
 
   constructor(private http: HttpClient) {}
 
-  getInvitations(userId: number): Observable<Invitation[]>
+  getInvitations(userId: number): Observable<any>
   {
-    return this.http.get<Invitation[]>(`${this.apiUrl}/${userId}`);
+    return this.http.get<any>(`${this.apiUrl}/${userId}/invitations`);
   }
 }

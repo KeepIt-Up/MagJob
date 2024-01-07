@@ -22,6 +22,9 @@ import { NoOrganizationComponent } from './organization/view/no-organization/no-
 import { UserInvitationsComponent } from './invitations/view/user-invitations/user-invitations.component';
 import { OrganizationMembersComponent } from './organization-members/view/organization-members/organization-members.component';
 import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
+import { OrganizatonNavComponent } from './organization/organizaton-nav/organizaton-nav.component';
+import { OrganizationComponent } from './organization/organization/organization.component';
+import { ChooseOrganizationComponent } from './organization/view/choose-organization/choose-organization.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import { ListMembersComponent } from './organization-members/view/list-members/l
     NoOrganizationComponent,
     UserInvitationsComponent,
     OrganizationMembersComponent,
-    ListMembersComponent
+    ListMembersComponent,
+    OrganizatonNavComponent,
+    OrganizationComponent,
+    ChooseOrganizationComponent
   ],
   imports: [
     BrowserModule,

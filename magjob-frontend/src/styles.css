@@ -17,15 +17,17 @@ code {
 
 html,
 body {
-    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     background: var(--Background, linear-gradient(90deg, rgba(6, 20, 27, 0.50) 0%, #06141B 22.92%, #06141B 76.05%, rgba(6, 20, 27, 0.50) 100%), #000);
 }
 
 app-footer {
+    position: fixed;
+    bottom: 0px;
+    align-self: center;
     display: flex;
     height: 20px;
-    width: 100vh;
+    width: 95%;
     padding: 10px;
     justify-content: center;
     align-items: center;
@@ -35,9 +37,14 @@ app-footer {
 }
 
 app-nav-menu {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    align-self: center;
+    position: sticky;
+    top: 0;
     display: flex;
-    width: 100%;
-    margin: 0;
+
     padding: 0px 20px;
     justify-content: space-between;
     align-items: center;
@@ -48,6 +55,15 @@ app-nav-menu {
     background: var(--Color-2, #11212D);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 0px 0px 20px 20px;
+}
+
+app-organizaton-nav {
+    position: fixed;
+    top: auto;
+    bottom: auto;
+    left: 0;
+    display: flex;
+    align-items: flex-start;
 }
 
 input[type=text],
@@ -82,6 +98,7 @@ input[type=tel] {
     line-height: normal;
     text-transform: uppercase;
 }
+
 .inputError {
     color: var(--Error, #FF1C1C);
     /* OTHER/Input Name */
@@ -143,4 +160,27 @@ h4 {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+button {
+
+    width: 181px;
+    height: 56px;
+    flex-shrink: 0;
+    justify-items: center;
+
+    border-radius: 10px;
+    border: 1px solid #000;
+    background: var(--Gold, #FFC700);
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.50);
+
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+
 }

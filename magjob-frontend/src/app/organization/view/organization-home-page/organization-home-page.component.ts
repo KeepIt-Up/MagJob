@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OrganizatonNavComponent } from '../../organizaton-nav/organizaton-nav.component';
 
 @Component({
   selector: 'app-organization-home-page',

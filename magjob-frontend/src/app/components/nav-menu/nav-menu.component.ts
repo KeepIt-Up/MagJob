@@ -16,8 +16,8 @@ export class NavMenuComponent {
   }
 
   getUserId(): number | null {
-    const currentUser = this.userService.getCurrentUser();
-    return currentUser ? currentUser.id : null;
+    const currentUser = this.userService.getCurrentUserId();
+    return currentUser ? currentUser : null;
   }
 
   logout(): void {
