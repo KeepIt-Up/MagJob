@@ -44,7 +44,7 @@ app-nav-menu {
     position: sticky;
     top: 0;
     display: flex;
-    
+
     padding: 0px 20px;
     justify-content: space-between;
     align-items: center;
@@ -160,4 +160,27 @@ h4 {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+button {
+
+    width: 181px;
+    height: 56px;
+    flex-shrink: 0;
+    justify-items: center;
+
+    border-radius: 10px;
+    border: 1px solid #000;
+    background: var(--Gold, #FFC700);
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.50);
+
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+
 }
