@@ -16,6 +16,7 @@ public class InvitationsToResponseFunction implements Function<List<Invitation>,
                         .map(invitation -> GetInvitationsResponse.Invitation.builder()
                                 .userId(invitation.getUser().getId())
                                 .organizationId(invitation.getOrganization().getId())
+                                .organizationName(invitation.getOrganization().getName())
                                 .build())
                         .toList())
                 .build();

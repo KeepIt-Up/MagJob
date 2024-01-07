@@ -1,16 +1,23 @@
 package com.keepitup.magjobbackend.invitation.controller.impl;
 
 import com.keepitup.magjobbackend.invitation.controller.api.InvitationController;
+import com.keepitup.magjobbackend.invitation.dto.AcceptInvitationRequest;
 import com.keepitup.magjobbackend.invitation.dto.GetInvitationResponse;
 import com.keepitup.magjobbackend.invitation.dto.GetInvitationsResponse;
 import com.keepitup.magjobbackend.invitation.dto.PostInvitationRequest;
 import com.keepitup.magjobbackend.invitation.entity.Invitation;
-import com.keepitup.magjobbackend.invitation.entity.InvitationId;
 import com.keepitup.magjobbackend.invitation.function.InvitationToResponseFunction;
 import com.keepitup.magjobbackend.invitation.function.InvitationsToResponseFunction;
 import com.keepitup.magjobbackend.invitation.function.RequestToInvitationFunction;
 import com.keepitup.magjobbackend.invitation.service.api.InvitationService;
+import com.keepitup.magjobbackend.member.dto.GetMemberResponse;
+import com.keepitup.magjobbackend.member.entity.Member;
+import com.keepitup.magjobbackend.member.function.MemberToResponseFunction;
+import com.keepitup.magjobbackend.member.service.api.MemberService;
+import com.keepitup.magjobbackend.organization.entity.Organization;
+import com.keepitup.magjobbackend.organization.service.api.OrganizationService;
 import com.keepitup.magjobbackend.user.entity.User;
+import com.keepitup.magjobbackend.user.service.api.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @Log
@@ -30,17 +35,29 @@ public class InvitationDefaultController implements InvitationController {
     private final InvitationsToResponseFunction invitationsToResponse;
     private final InvitationToResponseFunction invitationToResponse;
     private final RequestToInvitationFunction requestToInvitation;
+    private final MemberService memberService;
+    private final UserService userService;
+    private final OrganizationService organizationService;
+    private final MemberToResponseFunction memberToResponse;
+
 
     @Autowired
     public InvitationDefaultController(InvitationService service,
                                        InvitationsToResponseFunction invitationsToResponse,
                                        InvitationToResponseFunction invitationToResponse,
-                                       RequestToInvitationFunction requestToInvitation
-    ) {
+                                       RequestToInvitationFunction requestToInvitation,
+                                       MemberService memberService,
+                                       UserService userService,
+                                       OrganizationService organizationService,
+                                       MemberToResponseFunction memberToResponse) {
         this.service = service;
         this.invitationsToResponse = invitationsToResponse;
         this.invitationToResponse = invitationToResponse;
         this.requestToInvitation = requestToInvitation;
+        this.memberService = memberService;
+        this.userService = userService;
+        this.organizationService = organizationService;
+        this.memberToResponse = memberToResponse;
     }
 
 
@@ -89,5 +106,37 @@ public class InvitationDefaultController implements InvitationController {
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                         }
                 );
+    }
+
+    @Override
+    public GetMemberResponse acceptInvitation(AcceptInvitationRequest request) {
+        Optional<Invitation> invitation = service.findByUserAndOrganization(request.getUser(), request.getOrganization());
+        Optional<User> user = userService.find(request.getUser());
+        Optional<Organization> organization = organizationService.find(request.getOrganization());
+
+        if (invitation.isPresent()) {
+
+            if (user.isPresent() && organization.isPresent()) {
+                memberService.create(Member.builder()
+                        .pseudonym(request.getPseudonym())
+                        .organization(organization.get())
+                        .user(user.get())
+                        .build());
+
+                service.delete(user.get().getId(), organization.get().getId());
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return memberToResponse.apply(memberService.findByUserAndOrganization(user.get(), organization.get()).get());
+    }
+
+    @Override
+    public GetMemberResponse rejectInvitation(PostInvitationRequest request) {
+        return null;
     }
 }

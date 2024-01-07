@@ -24,6 +24,7 @@ public class GetMembersResponse {
     public static class Member {
 
         private BigInteger id;
+        private BigInteger userId;
 
         private String pseudonym;
         private String firstName;
