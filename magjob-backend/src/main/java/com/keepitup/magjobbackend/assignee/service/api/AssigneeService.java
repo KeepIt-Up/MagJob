@@ -5,6 +5,7 @@ import com.keepitup.magjobbackend.assignee.entity.AssigneeId;
 import com.keepitup.magjobbackend.member.entity.Member;
 import com.keepitup.magjobbackend.task.entity.Task;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,8 @@ public interface AssigneeService {
     List<Assignee> findAll();
 
     Optional<Assignee> find(AssigneeId id);
+
+    Optional<Assignee> findByMemberAndTask(BigInteger memberId, BigInteger taskId);
 
     List<Assignee> findAllByMember(Member member);
 
@@ -21,5 +24,9 @@ public interface AssigneeService {
 
     void delete(AssigneeId id);
 
+    void delete(BigInteger memberId, BigInteger taskId);
+
     void update(Assignee assignee);
+
+    Optional<List<Task>> findAllTasksByMember(BigInteger memberId);
 }

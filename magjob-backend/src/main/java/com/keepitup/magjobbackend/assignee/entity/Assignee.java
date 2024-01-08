@@ -20,12 +20,12 @@ public class Assignee {
     private AssigneeId id;
 
     @ManyToOne
-    @MapsId("task_id")
+    @MapsId("taskId")
     @JoinColumn(name = "task_id")
     private Task task;
 
     @ManyToOne
-    @MapsId("member_id")
+    @MapsId("memberId")
     @JoinColumn(name = "member_id")
     private Member member;
 }

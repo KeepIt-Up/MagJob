@@ -1,5 +1,6 @@
 package com.keepitup.magjobbackend.task.controller.impl;
 
+import com.keepitup.magjobbackend.assignee.service.api.AssigneeService;
 import com.keepitup.magjobbackend.organization.entity.Organization;
 import com.keepitup.magjobbackend.organization.service.api.OrganizationService;
 import com.keepitup.magjobbackend.task.controller.api.TaskController;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +35,7 @@ public class TaskDefaultController implements TaskController {
     private final TasksToResponseFunction tasksToResponse;
     private final TaskToResponseFunction taskToResponse;
     private final OrganizationService organizationService;
+    private final AssigneeService assigneeService;
 
     @Autowired
     public TaskDefaultController(
@@ -42,7 +45,8 @@ public class TaskDefaultController implements TaskController {
             TasksToResponseFunction tasksToResponse,
             TaskToResponseFunction taskToResponse,
             OrganizationService organizationService,
-            UserService userService
+            UserService userService,
+            AssigneeService assigneeService
     ) {
         this.service = service;
         this.requestToTask = requestToTask;
@@ -50,6 +54,7 @@ public class TaskDefaultController implements TaskController {
         this.tasksToResponse = tasksToResponse;
         this.taskToResponse = taskToResponse;
         this.organizationService = organizationService;
+        this.assigneeService = assigneeService;
     }
 
     @Override
@@ -74,12 +79,12 @@ public class TaskDefaultController implements TaskController {
 
     @Override
     public GetTasksResponse getTasksByMember(BigInteger id) {
+        Optional<List<Task>> tasksOptional = assigneeService.findAllTasksByMember(id);
 
-        return null;
-      //  User user = userService.find(id)
-      //          .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        List<Task> tasks = tasksOptional
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-       // return tasksToResponse.apply() // TODO find all tasksByUser on asigneeService
+        return tasksToResponse.apply(tasks);
     }
 
     @Override
