@@ -89,7 +89,12 @@ public class InvitationDefaultController implements InvitationController {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         else {
-            service.create(requestToInvitation.apply(request));
+            if (memberService.findByUserAndOrganization(userService.find(request.getUser()).get(),
+                    organizationService.find(request.getOrganization()).get()).isPresent()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT);
+            } else {
+                service.create(requestToInvitation.apply(request));
+            }
         }
 
         return service.findByUserAndOrganization(request.getUser(), request.getOrganization())
@@ -136,7 +141,14 @@ public class InvitationDefaultController implements InvitationController {
     }
 
     @Override
-    public GetMemberResponse rejectInvitation(PostInvitationRequest request) {
-        return null;
+    public void rejectInvitation(PostInvitationRequest request) {
+
+        Optional<Invitation> invitation = service.findByUserAndOrganization(request.getUser(), request.getOrganization());
+        if (invitation.isPresent()) {
+            service.delete(request.getUser(), request.getOrganization());
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }

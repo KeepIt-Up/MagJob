@@ -65,8 +65,7 @@ public interface InvitationController {
 
     @PostMapping("/api/invitations/reject")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    GetMemberResponse rejectInvitation(
+    void rejectInvitation(
             @RequestBody
             PostInvitationRequest request
     );
