@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, BigInteger> {
-    List<Task> findAllByTitle(String title);
+    Optional<Task> findByTitle(String title);
 
     List<Task> findAllByOrganization(Organization organization);
 

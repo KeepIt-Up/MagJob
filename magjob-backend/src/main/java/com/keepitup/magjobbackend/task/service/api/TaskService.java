@@ -13,7 +13,7 @@ public interface TaskService {
 
     Optional<Task> find(BigInteger id);
 
-    List<Task> findAllByTitle(String title);
+    Optional<Task> findByTitle(String title);
 
     List<Task> findAllByOrganization(Organization organization);
 
@@ -34,4 +34,6 @@ public interface TaskService {
     void delete(BigInteger id);
 
     void update(Task task);
+
+    void completeTask(Task task);
 }

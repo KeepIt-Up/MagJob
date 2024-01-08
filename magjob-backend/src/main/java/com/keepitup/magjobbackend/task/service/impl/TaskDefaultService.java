@@ -32,8 +32,8 @@ public class TaskDefaultService implements TaskService {
     }
 
     @Override
-    public List<Task> findAllByTitle(String title) {
-        return taskRepository.findAllByTitle(title);
+    public Optional<Task> findByTitle(String title) {
+        return taskRepository.findByTitle(title);
     }
 
     @Override
@@ -74,6 +74,7 @@ public class TaskDefaultService implements TaskService {
     @Override
     public void create(Task task) {
         task.setDateOfCreation(ZonedDateTime.now());
+        task.setIsDone(false);
         taskRepository.save(task);
     }
 
@@ -84,6 +85,13 @@ public class TaskDefaultService implements TaskService {
 
     @Override
     public void update(Task task) {
+        taskRepository.save(task);
+    }
+
+    @Override
+    public void completeTask(Task task) {
+        task.setDateOfCompletion(ZonedDateTime.now());
+        task.setIsDone(true);
         taskRepository.save(task);
     }
 }
