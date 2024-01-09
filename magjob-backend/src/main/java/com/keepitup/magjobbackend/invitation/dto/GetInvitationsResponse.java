@@ -27,6 +27,8 @@ public class GetInvitationsResponse {
         private BigInteger userId;
         private BigInteger organizationId;
 
+        private String organizationName;
+
     }
 
     @Singular
