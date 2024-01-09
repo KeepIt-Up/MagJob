@@ -37,7 +37,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/api/members"),
             new AntPathRequestMatcher("/api/members/{id}"),
             new AntPathRequestMatcher("/api/organizations/{organizationId}/members"),
-            new AntPathRequestMatcher("/api/organizations/users/{userId}")
+            new AntPathRequestMatcher("/api/organizations/users/{userId}"),
+            new AntPathRequestMatcher("/healthcheck/**")
     };
 
     private final JwtRequestFilter jwtRequestFilter;
