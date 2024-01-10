@@ -1,8 +1,11 @@
 package com.keepitup.magjobbackend.smoketests;
 
+import com.keepitup.magjobbackend.member.dto.PatchMemberRequest;
 import com.keepitup.magjobbackend.member.dto.PostMemberRequest;
+import com.keepitup.magjobbackend.organization.dto.PatchOrganizationRequest;
 import com.keepitup.magjobbackend.organization.dto.PostOrganizationRequest;
 import com.keepitup.magjobbackend.user.dto.AuthenticationRequest;
+import com.keepitup.magjobbackend.user.dto.PatchUserRequest;
 import com.keepitup.magjobbackend.user.dto.PostUserRequest;
 import com.keepitup.magjobbackend.user.dto.PutPasswordRequest;
 import org.json.JSONArray;
@@ -12,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
@@ -25,13 +31,19 @@ public class SmokeTests {
     private static final String USER_EMAIL_TEST_VALUE = "test@magjob.test";
     private static final String USER_PASSWORD_TEST_VALUE = "password";
     private static final String USER_PASSWORD_UPDATED_TEST_VALUE = "passwordUpdate";
+    private static final String USER_FIRSTNAME_UPDATED_TEST_VALUE = "testFirstNameUpdate";
+    private static final String USER_LASTNAME_UPDATED_TEST_VALUE = "testLastNameUpdate";
 
     private static final String USER_MEMBER_CREATION_EMAIL_TEST_VALUE = "testUserMember@magjob.test";
 
     private static final String ORGANIZATION_NAME_TEST_VALUE = "testOrganization";
     private static final String ORGANIZATION_PROFILE_BANNER_URL_TEST_VALUE = "https://magjob.com.default_profile_banner_url_valu";
+    private static final String ORGANIZATION_NAME_UPDATED_TEST_VALUE = "testOrganizationUpdated";
+    private static final String ORGANIZATION_PROFILE_BANNER_URL_UPDATED_TEST_VALUE = "https://magjob.com.default_profile_banner_url_updt";
 
     private static final String MEMBER_PSEUDONYM_TEST_VALUE = "testMember";
+
+    private static final String MEMBER_PSEUDONYM_UPDATED_TEST_VALUE = "OwnerUpdate";
 
 
 
@@ -56,10 +68,13 @@ public class SmokeTests {
             "/healthcheck/getOrganizationsTest",
             "/healthcheck/getOrganizationTest",
             "/healthcheck/getOrganizationsByUserTest",
+            "/healthcheck/updateOrganizationTest",
             "/healthcheck/getMembersTest",
             "/healthcheck/getMembersByOrganizationTest",
             "/healthcheck/getMemberTest",
-            "/healthcheck/createMemberTest"
+            "/healthcheck/updateMemberTest",
+            "/healthcheck/createMemberTest",
+            "/healthcheck/updateUserTest"
     };
 
     @Autowired
@@ -105,18 +120,19 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users/" + testUserId, HttpMethod.GET, entity, String.class);
     }
 
-    //TODO (this template doesn't support PATCH Http method)
-//    @GetMapping("/healthcheck/updateUserTest")
-//    public ResponseEntity<String> updateUserTest() throws JSONException {
-//        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
-//
-//        PatchUserRequest patchUserRequest = new PatchUserRequest();
-//        patchUserRequest.setFirstname("testFirstNameUpdate");
-//
-//        HttpEntity<PatchUserRequest> requestEntity = new HttpEntity<>(patchUserRequest, entity.getHeaders());
-//
-//        return restTemplate.exchange("/api/users/" + testUserId, HttpMethod.PATCH, requestEntity, String.class);
-//    }
+    @GetMapping("/healthcheck/updateUserTest")
+    public ResponseEntity<String> updateUserTest() throws JSONException {
+        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
+
+        PatchUserRequest patchUserRequest = new PatchUserRequest();
+        patchUserRequest.setEmail(USER_EMAIL_TEST_VALUE);
+        patchUserRequest.setFirstname(USER_FIRSTNAME_UPDATED_TEST_VALUE);
+        patchUserRequest.setLastname(USER_LASTNAME_UPDATED_TEST_VALUE);
+
+        HttpEntity<PatchUserRequest> requestEntity = new HttpEntity<>(patchUserRequest, entity.getHeaders());
+
+        return restTemplate.exchange("/api/users/" + testUserId, HttpMethod.PATCH, requestEntity, String.class);
+    }
 
     @GetMapping("/healthcheck/updateUserPasswordTest")
     public ResponseEntity<String> updateUserPasswordTest() throws JSONException {
@@ -152,6 +168,19 @@ public class SmokeTests {
         return response;
     }
 
+    @GetMapping("/healthcheck/updateOrganizationTest")
+    public ResponseEntity<String> updateOrganizationTest() throws JSONException {
+        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
+
+        PatchOrganizationRequest patchOrganizationRequest = new PatchOrganizationRequest();
+        patchOrganizationRequest.setName(ORGANIZATION_NAME_UPDATED_TEST_VALUE);
+        patchOrganizationRequest.setProfileBannerUrl(ORGANIZATION_PROFILE_BANNER_URL_UPDATED_TEST_VALUE);
+
+        HttpEntity<PatchOrganizationRequest> requestEntity = new HttpEntity<>(patchOrganizationRequest, entity.getHeaders());
+
+        return restTemplate.exchange("/api/organizations/" + testOrganizationId, HttpMethod.PATCH, requestEntity, String.class);
+    }
+
     @GetMapping("/healthcheck/getOrganizationsTest")
     public ResponseEntity<String> getOrganizationsTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -185,6 +214,18 @@ public class SmokeTests {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
         return restTemplate.exchange("/api/members/" + testMemberId, HttpMethod.GET, entity, String.class);
+    }
+
+    @GetMapping("/healthcheck/updateMemberTest")
+    public ResponseEntity<String> updateMemberTest() throws JSONException {
+        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
+
+        PatchMemberRequest patchMemberRequest = new PatchMemberRequest();
+        patchMemberRequest.setPseudonym(MEMBER_PSEUDONYM_UPDATED_TEST_VALUE);
+
+        HttpEntity<PatchMemberRequest> requestEntity = new HttpEntity<>(patchMemberRequest, entity.getHeaders());
+
+        return restTemplate.exchange("/api/members/" + testMemberId, HttpMethod.PATCH, requestEntity, String.class);
     }
 
     @GetMapping("/healthcheck/getMembersByOrganizationTest")
@@ -234,29 +275,40 @@ public class SmokeTests {
     }
 
     //TODO
-    //updateUserTest
     //deleteUserTest
-    //updateOrganizationTest
     //deleteOrganizationTest
-    //updateMemberTest
     //deleteMemberTest
     @GetMapping("/healthcheck")
-    public ResponseEntity<String> healthCheck() throws JSONException {
-        ResponseEntity<String> createUserResponse = createUserTest();
-        if(!successfulResponseCodes.contains(createUserResponse.getStatusCode())) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body("Endpoint: " + "/healthcheck/createUserTest" + " is not working properly");
-        }
-
-        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
-        for (String endpoint : endpointsToCheck) {
-            ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.GET, entity, String.class);
-            if (!successfulResponseCodes.contains(response.getStatusCode())) {
+    public ResponseEntity<String> healthCheck() {
+        try {
+            ResponseEntity<String> createUserResponse = createUserTest();
+            if (!successfulResponseCodes.contains(createUserResponse.getStatusCode())) {
                 return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                        .body("Endpoint: " + endpoint + " is not working properly");
+                        .body("Endpoint: " + "/healthcheck/createUserTest" + " is not working properly");
             }
+
+            HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
+            for (String endpoint : endpointsToCheck) {
+                try {
+                    ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.GET, entity, String.class);
+                    if (!successfulResponseCodes.contains(response.getStatusCode())) {
+                        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                                .body("Endpoint: " + endpoint + " is not working properly");
+                    }
+                } catch (HttpClientErrorException | HttpServerErrorException e) {
+                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                            .body("Endpoint: " + endpoint + " returned an error - " + e.getStatusCode() + ": " + e.getStatusText());
+                } catch (ResourceAccessException e) {
+                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                            .body("Endpoint: " + endpoint + " is not reachable - " + e.getMessage());
+                }
+            }
+
+            return ResponseEntity.ok("All endpoints work properly");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
         }
-        return ResponseEntity.ok("All endpoints work properly");
     }
 
     private HttpEntity<String> createHttpEntityWithAuthenticatedTestUserCredentials(String email, String password) throws JSONException {

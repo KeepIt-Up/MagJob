@@ -16,7 +16,9 @@ public class MagJobBackendApplication {
 
 	@Bean
 	public RestTemplate restTemplate(@Value("${keepitup.magjob.backend.url}") String baseUrl) {
-		return new RestTemplateBuilder().rootUri(baseUrl).build();
+		RestTemplate template = new RestTemplateBuilder().rootUri(baseUrl).build();
+		template.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+		return template;
 	}
 
 }
