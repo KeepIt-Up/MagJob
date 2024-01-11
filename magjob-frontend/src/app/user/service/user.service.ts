@@ -40,8 +40,9 @@ belongToAnyOrganization(): Observable<boolean> {
 
   return new Observable<boolean>((observer) => {
     this.organizationService.getUserOrganizations(userId).subscribe(
-      (organizations: Organization[]) => {
-        this.organizations = organizations;
+      (data: any) => {
+        this.organizations = data.organizations;
+        console.log(data);
 
         if (this.organizations.length === 0) {
           console.log(this.organizations.length);
