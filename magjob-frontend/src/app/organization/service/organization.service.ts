@@ -27,7 +27,7 @@ export class OrganizationService {
     return this.http.get<any>(`${this.apiUrl}/${organizationId}/members`);
   }
 
-  getCurrentOrganizationId(): number | null {
+  getCurrentOrganizationId(): number {
     if(this.currentOrganizationId == null)
     {
       this.currentOrganizationId =  parseInt(localStorage.getItem("Organization") || '0');
