@@ -12,6 +12,7 @@ import { OrganizationComponent } from './organization/organization/organization.
 import { OrganizationHomePageComponent } from './organization/view/organization-home-page/organization-home-page.component';
 import { ChooseOrganizationComponent } from './organization/view/choose-organization/choose-organization.component';
 import { ListMembersComponent } from './organization-members/view/list-members/list-members.component';
+import { AddMembersComponent } from './organization-members/view/add-members/add-members.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -31,7 +32,8 @@ const routes: Routes = [
       { path: 'members', component: ListMembersComponent },
       { path: 'settings', component: OrganizationHomePageComponent },
       { path: 'tasks', component: OrganizationHomePageComponent },
-      { path: 'documents', component: OrganizationHomePageComponent }
+      { path: 'documents', component: OrganizationHomePageComponent },
+      { path: 'addMembers',component: AddMembersComponent}
     ]
   },
 
