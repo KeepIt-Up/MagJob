@@ -24,7 +24,6 @@ export class OrganizationService {
 
   getMembers(organizationId: number): Observable<any>
   {
-    //TODO connect with endpoint
     return this.http.get<any>(`${this.apiUrl}/${organizationId}/members`);
   }
 

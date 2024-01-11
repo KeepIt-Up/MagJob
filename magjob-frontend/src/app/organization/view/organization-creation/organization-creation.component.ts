@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { OrganizationCreation } from "../../model/organization-creation";
 import { OrganizationCreationService } from '../../service/organization-creation.service';
 
@@ -19,7 +20,7 @@ export class OrganizationCreationComponent {
   organizationForm: FormGroup;
   selectedBannerUrl: string = '';
 
-  constructor(private organizationService: OrganizationCreationService, private fb: FormBuilder) {
+  constructor(private organizationService: OrganizationCreationService, private fb: FormBuilder, private router: Router) {
     this.organizationForm = this.fb.group({
       name: ['', Validators.required]
     });
@@ -37,6 +38,7 @@ export class OrganizationCreationComponent {
       this.organizationService.createOrganization(this.organizationModel).subscribe(
         (response) => {
           console.log('Organization created successfully:', response);
+          this.router.navigate(['/organization/'+response.id+'/addMembers']);
         },
         (error) => {
           console.error('Error creating organization:', error);
