@@ -36,6 +36,9 @@ export class LoginComponent {
 
 
 submitApplication() {
+  //clear local storage before login
+  localStorage.clear();
+
   if (!(this.loginForm.invalid && (this.loginForm.dirty || this.loginForm.touched)) && this.loginModel.email && this.loginModel.password) {
     this.authService.login(this.loginModel).pipe(
       switchMap((response) => {
