@@ -1,6 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --Background: linear-gradient(90deg, rgba(6, 20, 27, 0.50) 0%, #06141B 22.92%, #06141B 76.05%, rgba(6, 20, 27, 0.50) 100%), #000;
+    --Gold: #FFC700;
+    --Gray: #4A5C6A;
+    --Red: #FF1C1C;
+    --Black: #1C1C1C;
+    --Warning: var(--Red);
+    --Error: var(--Red);
+    --Text: var(--Black);
+  }
 
-/* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
 }
@@ -17,15 +25,17 @@ code {
 
 html,
 body {
-    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background: var(--Background, linear-gradient(90deg, rgba(6, 20, 27, 0.50) 0%, #06141B 22.92%, #06141B 76.05%, rgba(6, 20, 27, 0.50) 100%), #000);
+    background: var(--Background);
 }
 
 app-footer {
+    position: fixed;
+    bottom: 0px;
+    align-self: center;
     display: flex;
     height: 20px;
-    width: 100vh;
+    width: 95%;
     padding: 10px;
     justify-content: center;
     align-items: center;
@@ -35,9 +45,14 @@ app-footer {
 }
 
 app-nav-menu {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    align-self: center;
+    position: sticky;
+    top: 0;
     display: flex;
-    width: 100%;
-    margin: 0;
+
     padding: 0px 20px;
     justify-content: space-between;
     align-items: center;
@@ -48,6 +63,15 @@ app-nav-menu {
     background: var(--Color-2, #11212D);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 0px 0px 20px 20px;
+}
+
+app-organizaton-nav {
+    position: fixed;
+    top: auto;
+    bottom: auto;
+    left: 0;
+    display: flex;
+    align-items: flex-start;
 }
 
 input[type=text],
@@ -63,7 +87,7 @@ input[type=tel] {
     align-items: center;
 
     border-radius: 5px;
-    color: var(--Text-Color, #1C1C1C);
+    color: var(--Text);
     /* OTHER/Input Text */
     font-family: Inter;
     font-size: 14px;
@@ -73,7 +97,7 @@ input[type=tel] {
 }
 
 .inputName {
-    color: var(--Error, #FF1C1C);
+    color: var(--Error);
     /* OTHER/Input Name */
     font-family: Inter;
     font-size: 8px;
@@ -82,8 +106,9 @@ input[type=tel] {
     line-height: normal;
     text-transform: uppercase;
 }
+
 .inputError {
-    color: var(--Error, #FF1C1C);
+    color: var(--Error);
     /* OTHER/Input Name */
     font-family: Inter;
     font-size: 12px;
@@ -131,16 +156,40 @@ h2 {
     font-weight: 700;
     line-height: normal;
 
-    color: var(--Gold, #FFC700);
+    color: var(--Gold);
     text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.50);
 }
 
 h4 {
-    color: var(--Gold, #FFC700);
+    color: var(--Gold);
     /* HEADLINE/H4-24pt */
     font-family: Inter;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+button {
+
+    width: 181px;
+    height: 56px;
+    flex-shrink: 0;
+    justify-items: center;
+    margin: 5px;
+
+    border-radius: 10px;
+    border: 1px solid #000;
+    background: var(--Gold);
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.50);
+
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+
 }

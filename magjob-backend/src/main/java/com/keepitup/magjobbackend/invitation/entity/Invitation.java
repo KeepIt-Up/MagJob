@@ -32,12 +32,12 @@ public class Invitation {
     private ZonedDateTime dateOfCreation;
 
     @ManyToOne
-    @MapsId("organization_id")
-    @JoinColumn(name = "organization_id")
-    private Organization organization;
-
-    @ManyToOne
-    @MapsId("user_id")
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @MapsId("organizationId")
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 }

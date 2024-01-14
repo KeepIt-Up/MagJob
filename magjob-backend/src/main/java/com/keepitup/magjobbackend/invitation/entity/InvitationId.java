@@ -8,13 +8,14 @@ import lombok.experimental.SuperBuilder;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-@Data
 @Embeddable
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class InvitationId implements Serializable {
     @Column(name = "user_id")
     private BigInteger userId;

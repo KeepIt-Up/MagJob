@@ -23,6 +23,7 @@ export class AuthService {
     // Clear token from local storage
     localStorage.removeItem('access_token');
     localStorage.removeItem('User');
+    localStorage.removeItem('Organization');
   }
 
   isAuthenticated(): boolean {
