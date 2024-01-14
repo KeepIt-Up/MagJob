@@ -2,8 +2,6 @@ import { Organization } from './../model/organization';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Member } from '../model/member';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +22,10 @@ export class OrganizationService {
 
   getMembers(organizationId: number): Observable<any>
   {
-    //TODO connect with endpoint
     return this.http.get<any>(`${this.apiUrl}/${organizationId}/members`);
   }
 
-  getCurrentOrganizationId(): number | null {
+  getCurrentOrganizationId(): number {
     if(this.currentOrganizationId == null)
     {
       this.currentOrganizationId =  parseInt(localStorage.getItem("Organization") || '0');
