@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrganizationService } from '../../../organization/service/organization.service';
+import { Member } from 'src/app/organization/model/member';
 
 @Component({
   selector: 'app-list-members',
@@ -8,19 +9,16 @@ import { OrganizationService } from '../../../organization/service/organization.
   styleUrls: ['./list-members.component.css']
 })
 export class ListMembersComponent implements OnInit {
-  members: any[] = [];
+  members: Member[] = [];
   organizationId: number | null = null;
 
   constructor(private route: ActivatedRoute, private organizationService: OrganizationService) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
       this.organizationId = this.organizationService.getCurrentOrganizationId();
       if (this.organizationId) {
-        console.log("Damian")
         this.loadMembers(this.organizationId);
       }
-    });
   }
 
   loadMembers(organizationId: number): void {
@@ -28,7 +26,6 @@ export class ListMembersComponent implements OnInit {
     this.organizationService.getMembers(organizationId).subscribe(
       (data) => {
         this.members = data.members;
-        console.log(data);
       },
       (error) => {
         console.error('Error fetching members:', error);
