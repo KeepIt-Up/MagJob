@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +21,8 @@ export class InvitationsService {
     return this.http.post(this.apiUrl, invitation)
       .pipe(
         catchError((error: any) => {
-          // Handle error here
           console.error('Error occurred:', error);
-          throw error; // You may want to throw the error or handle it in a different way
+          throw error; 
         })
       );
   }
