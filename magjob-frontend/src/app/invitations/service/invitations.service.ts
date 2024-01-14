@@ -28,4 +28,16 @@ export class InvitationsService {
         })
       );
   }
+
+  accept(invitation: Invitation)
+  {
+    const rejectEndpoint = this.apiUrl + '/accept';
+    return this.http.post(rejectEndpoint, invitation);
+  }
+
+  reject(invitation: Invitation)
+  {
+    const rejectEndpoint = this.apiUrl + '/reject';
+    return this.http.post(rejectEndpoint, invitation);
+  }
 }

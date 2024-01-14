@@ -1,5 +1,4 @@
 import { Invitation } from './../../model/invitation';
-import { OrganizationService } from './../../../organization/service/organization.service';
 import { UserService } from 'src/app/user/service/user.service';
 import { Component, OnInit } from '@angular/core';
 import { InvitationsService } from 'src/app/invitations/service/invitations.service';
@@ -14,7 +13,9 @@ export class UserInvitationsComponent implements OnInit {
   invitations: any[] = [];
   userId: number | null = null;
 
-  constructor(private invitationService: InvitationsService, private userService: UserService, private organizationService: OrganizationService) {}
+  constructor(
+    private invitationService: InvitationsService, 
+    private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadInvitations();
@@ -36,12 +37,27 @@ export class UserInvitationsComponent implements OnInit {
     }
   }
 
-  accept(Invitation: Invitation): void
+  accept(invitation: Invitation): void
   {
-
+    this.invitationService.accept(invitation).subscribe(
+      (response) => {
+        console.log('Invitation accepted successfully:', response);
+      },
+      (error) => {
+        console.error('Error accepting invitation:', error);
+      }
+    );
   }
-  deny(Invitation: Invitation): void 
-  {
 
+  reject(invitation: Invitation): void 
+  {
+    this.invitationService.reject(invitation).subscribe(
+      (response) => {
+        console.log('Invitation rejected successfully:', response);
+      },
+      (error) => {
+        console.error('Error rejecting invitation:', error);
+      }
+    );
   }
 }
