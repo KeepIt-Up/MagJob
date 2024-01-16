@@ -1,14 +1,13 @@
+import { Organization } from './../model/organization';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Organization } from '../model/organization';
-import { Member } from '../model/member';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganizationService {
+  private currentOrganizationId: number | null = null;
 
   private apiUrl = '/api/organizations';
   constructor(private http: HttpClient) { }
@@ -17,13 +16,29 @@ export class OrganizationService {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
-  getUserOrganizations(userId: number): Observable<Organization[]> {
-    return this.http.get<Organization[]>(`${this.apiUrl}/users/${userId}`);
+  getUserOrganizations(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users/${userId}`);
   }
 
-  getMembers(organizationId: number): Observable<Member[]>
+  getMembers(organizationId: number): Observable<any>
   {
-    //TODO connect with endpoint
-    return this.http.get<Member[]>(`${this.apiUrl}/${organizationId}/members`);
+    return this.http.get<any>(`${this.apiUrl}/${organizationId}/members`);
+  }
+
+  getCurrentOrganizationId(): number {
+    if(this.currentOrganizationId == null)
+    {
+      this.currentOrganizationId =  parseInt(localStorage.getItem("Organization") || '0');
+    }
+    return this.currentOrganizationId;
+  }
+
+  setCurrentOrganizationId(organization: Organization): void {
+    this.currentOrganizationId = organization.id;
+    localStorage.setItem("Organization",this.currentOrganizationId.toString());
+  }
+
+  clearCurrentOrganization(): void {
+    this.currentOrganizationId = null;
   }
 }

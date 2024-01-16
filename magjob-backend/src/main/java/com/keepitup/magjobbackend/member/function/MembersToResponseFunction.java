@@ -15,7 +15,10 @@ public class MembersToResponseFunction implements Function<List<Member>, GetMemb
                 .members(entities.stream()
                         .map(member -> GetMembersResponse.Member.builder()
                                 .id(member.getId())
+                                .userId(member.getUser().getId())
                                 .pseudonym(member.getPseudonym())
+                                .firstName(member.getUser().getFirstname())
+                                .lastName(member.getUser().getLastname())
                                 .build())
                         .toList())
                 .build();

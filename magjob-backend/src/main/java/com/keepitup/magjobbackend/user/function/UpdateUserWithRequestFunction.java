@@ -17,7 +17,7 @@ public class UpdateUserWithRequestFunction implements BiFunction<User, PatchUser
                 .lastname(request.getLastname())
                 .phoneNumber(request.getPhoneNumber())
                 .password(entity.getPassword())
-                .birthDate(entity.getBirthDate())
+                .birthDate(request.getBirthDate())
                 .build();
     }
 }

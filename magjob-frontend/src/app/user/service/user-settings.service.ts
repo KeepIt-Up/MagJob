@@ -1,19 +1,18 @@
-// src/app/user-settings/user-settings.service.ts
+import { PasswordChange } from './../model/password-change';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { UserSettings } from '../model/user-settings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserSettingsService {
-  private apiUrl = 'your-api-endpoint'; // replace with your API endpoint
+  private apiUrl = '/api/users';
 
   constructor(private http: HttpClient) {}
 
-  updateUserSettings(userSettings: UserSettings): Observable<UserSettings> {
-    const url = `${this.apiUrl}/user-settings/${userSettings.id}`;
-    return this.http.put<UserSettings>(url, userSettings);
+  updateUserPassword(passwordChange: PasswordChange, userId: number): Observable<PasswordChange> {
+    const url = `${this.apiUrl}/${userId}`;
+    return this.http.put<PasswordChange>(url, passwordChange);
   }
 }
