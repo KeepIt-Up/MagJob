@@ -20,9 +20,10 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "invitations")
 public class Invitation {
-
-    @EmbeddedId
-    private InvitationId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invitationSequenceGenerator")
+    @SequenceGenerator(name = "invitationSequenceGenerator")
+    private BigInteger id;
 
     @NotNull
     @Column(name = "is_active", nullable = false)
@@ -32,12 +33,10 @@ public class Invitation {
     private ZonedDateTime dateOfCreation;
 
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @MapsId("organizationId")
     @JoinColumn(name = "organization_id")
     private Organization organization;
 }
