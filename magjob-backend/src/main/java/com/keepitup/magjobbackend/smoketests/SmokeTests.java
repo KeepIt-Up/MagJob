@@ -1,5 +1,6 @@
 package com.keepitup.magjobbackend.smoketests;
 
+import com.keepitup.magjobbackend.invitation.dto.AcceptInvitationRequest;
 import com.keepitup.magjobbackend.invitation.dto.GetInvitationsResponse;
 import com.keepitup.magjobbackend.invitation.dto.PostInvitationRequest;
 import com.keepitup.magjobbackend.member.dto.PatchMemberRequest;
@@ -37,7 +38,9 @@ public class SmokeTests {
     private static final String USER_LASTNAME_UPDATED_TEST_VALUE = "testLastNameUpdate";
 
     private static final String USER_MEMBER_CREATION_EMAIL_TEST_VALUE = "testUserMember@magjob.test";
-    //private static final String USER_INVITATION_CREATION_EMAIL_TEST_VALUE = "testUserInvitation@magjob.test";
+    private static final String USER_INVITATION_CREATION_EMAIL_TEST_VALUE = "testUserInvitation@magjob.test";
+    private static final String USER_INVITATION_ACCEPT_EMAIL_TEST_VALUE = "testUserInvitationAccept@magjob.test";
+    private static final String USER_INVITATION_REJECT_EMAIL_TEST_VALUE = "testUserInvitationReject@magjob.test";
 
     private static final String ORGANIZATION_NAME_TEST_VALUE = "testOrganization";
     private static final String ORGANIZATION_PROFILE_BANNER_URL_TEST_VALUE = "https://magjob.com.default_profile_banner_url_valu";
@@ -48,17 +51,20 @@ public class SmokeTests {
 
     private static final String MEMBER_PSEUDONYM_UPDATED_TEST_VALUE = "OwnerUpdate";
 
+    private static final String USER_INVITATION_ACCEPT_PSEUDONYM_TEST_VALUE = "testInvitationMember";
+
 
 
     private final RestTemplate restTemplate;
 
     private BigInteger testUserId;
     private BigInteger testUserMemberId;
-    //private BigInteger testUserInvitationId;
+    private BigInteger testUserInvitationId;
+    private BigInteger testUserInvitationAcceptId;
+    private BigInteger testUserInvitationRejectId;
     private String testUserPassword;
     private BigInteger testOrganizationId;
     private BigInteger testMemberId;
-    //private BigInteger testInvitationId;
 
     private static final List<HttpStatus> successfulResponseCodes = Arrays.asList(
             HttpStatus.OK,
@@ -80,11 +86,13 @@ public class SmokeTests {
             "/healthcheck/getMemberTest",
             "/healthcheck/updateMemberTest",
             "/healthcheck/createMemberTest",
-            //"/healthcheck/sendInvitationTest",
-            //"/healthcheck/getInvitationsByOrganizationTest",
-            //"/healthcheck/getInvitationsByUserTest",
-            //"/healthcheck/getInvitationTest",
-            //"/healthcheck/deleteInvitationTest",
+            "/healthcheck/sendInvitationTest",
+            "/healthcheck/getInvitationsByOrganizationTest",
+            "/healthcheck/getInvitationsByUserTest",
+            "/healthcheck/getInvitationTest",
+            "/healthcheck/deleteInvitationTest",
+            "/healthcheck/acceptInvitationTest",
+            "/healthcheck/rejectInvitationTest",
             "/healthcheck/updateUserTest",
             "/healthcheck/deleteMemberTest",
             "/healthcheck/deleteOrganizationTest",
@@ -309,7 +317,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/members/" + testMemberId, HttpMethod.DELETE, entity, String.class);
     }
 
-  /*  @GetMapping("/healthcheck/sendInvitationTest")
+    @GetMapping("/healthcheck/sendInvitationTest")
     public ResponseEntity<String> sendInvitationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
@@ -330,33 +338,28 @@ public class SmokeTests {
 
         HttpEntity<PostInvitationRequest> requestEntity = new HttpEntity<>(postInvitationRequest, entity.getHeaders());
 
-        ResponseEntity<String> invitationResponse = restTemplate.exchange("/api/invitations", HttpMethod.POST, requestEntity, String.class);
-        String invitationResponseBody = invitationResponse.getBody();
-        JSONObject invitationJsonObject = new JSONObject(invitationResponseBody);
-        testInvitationId = "null".equals(invitationJsonObject.getString("id")) ? null : new BigInteger(invitationJsonObject.getString("id"));
-
-        return invitationResponse;
+        return restTemplate.exchange("/api/invitations", HttpMethod.POST, requestEntity, String.class);
     }
 
     @GetMapping("/healthcheck/getInvitationsByOrganizationTest")
     public ResponseEntity<String> getInvitationsByOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
-        return restTemplate.exchange("/api/invitations/" + testOrganizationId + "/invitations", HttpMethod.GET, entity, String.class);
+        return restTemplate.exchange("/api/organizations/" + testOrganizationId + "/invitations", HttpMethod.GET, entity, String.class);
     }
 
     @GetMapping("/healthcheck/getInvitationsByUserTest")
     public ResponseEntity<String> getInvitationsByUserTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
-        return restTemplate.exchange("/api/invitations/" + testUserInvitationId + "/invitations", HttpMethod.GET, entity, String.class);
+        return restTemplate.exchange("/api/users/" + testUserInvitationId + "/invitations", HttpMethod.GET, entity, String.class);
     }
 
     @GetMapping("/healthcheck/getInvitationTest")
     public ResponseEntity<String> getInvitationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
-        return restTemplate.exchange("/api/invitations/" + testInvitationId, HttpMethod.GET, entity, String.class);
+        return restTemplate.exchange("/api/invitations/" + testUserInvitationId + "/" + testOrganizationId, HttpMethod.GET, entity, String.class);
     }
 
     @GetMapping("/healthcheck/deleteInvitationTest")
@@ -364,7 +367,72 @@ public class SmokeTests {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
         return restTemplate.exchange("/api/invitations/" + testUserInvitationId + "/" + testOrganizationId, HttpMethod.DELETE, entity, String.class);
-    }*/
+    }
+
+    @GetMapping("/healthcheck/acceptInvitationTest")
+    public ResponseEntity<String> acceptInvitationTest() throws JSONException {
+        PostUserRequest postUserRequest = new PostUserRequest();
+        postUserRequest.setEmail(USER_INVITATION_ACCEPT_EMAIL_TEST_VALUE);
+        postUserRequest.setFirstname(USER_FIRSTNAME_TEST_VALUE);
+        postUserRequest.setLastname(USER_LASTNAME_TEST_VALUE);
+        postUserRequest.setPassword(USER_PASSWORD_TEST_VALUE);
+
+        ResponseEntity<String> userResponse = restTemplate.postForEntity("/api/users", postUserRequest, String.class);
+        String userResponseBody = userResponse.getBody();
+        JSONObject userJsonObject = new JSONObject(userResponseBody);
+        testUserInvitationAcceptId = "null".equals(userJsonObject.getString("id")) ? null : new BigInteger(userJsonObject.getString("id"));
+
+        PostInvitationRequest postInvitationRequest = new PostInvitationRequest();
+        postInvitationRequest.setUser(testUserInvitationAcceptId);
+        postInvitationRequest.setOrganization(testOrganizationId);
+
+        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_INVITATION_ACCEPT_EMAIL_TEST_VALUE, USER_PASSWORD_TEST_VALUE);
+
+        HttpEntity<PostInvitationRequest> postInvitationEntity = new HttpEntity<>(postInvitationRequest, entity.getHeaders());
+
+        restTemplate.exchange("/api/invitations", HttpMethod.POST, postInvitationEntity, String.class);
+
+        AcceptInvitationRequest acceptInvitationRequest = new AcceptInvitationRequest();
+        acceptInvitationRequest.setPseudonym(USER_INVITATION_ACCEPT_PSEUDONYM_TEST_VALUE);
+        acceptInvitationRequest.setUser(testUserInvitationAcceptId);
+        acceptInvitationRequest.setOrganization(testOrganizationId);
+
+        HttpEntity<AcceptInvitationRequest> acceptInvitationEntity = new HttpEntity<>(acceptInvitationRequest, entity.getHeaders());
+
+        return restTemplate.exchange("/api/invitations/accept", HttpMethod.POST, acceptInvitationEntity, String.class);
+    }
+
+    @GetMapping("/healthcheck/rejectInvitationTest")
+    public ResponseEntity<String> rejectInvitationTest() throws JSONException {
+        PostUserRequest postUserRequest = new PostUserRequest();
+        postUserRequest.setEmail(USER_INVITATION_REJECT_EMAIL_TEST_VALUE);
+        postUserRequest.setFirstname(USER_FIRSTNAME_TEST_VALUE);
+        postUserRequest.setLastname(USER_LASTNAME_TEST_VALUE);
+        postUserRequest.setPassword(USER_PASSWORD_TEST_VALUE);
+
+        ResponseEntity<String> userResponse = restTemplate.postForEntity("/api/users", postUserRequest, String.class);
+        String userResponseBody = userResponse.getBody();
+        JSONObject userJsonObject = new JSONObject(userResponseBody);
+        testUserInvitationRejectId = "null".equals(userJsonObject.getString("id")) ? null : new BigInteger(userJsonObject.getString("id"));
+
+        PostInvitationRequest postInvitationRequest = new PostInvitationRequest();
+        postInvitationRequest.setUser(testUserInvitationRejectId);
+        postInvitationRequest.setOrganization(testOrganizationId);
+
+        HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_INVITATION_REJECT_EMAIL_TEST_VALUE, USER_PASSWORD_TEST_VALUE);
+
+        HttpEntity<PostInvitationRequest> postInvitationEntity = new HttpEntity<>(postInvitationRequest, entity.getHeaders());
+
+        restTemplate.exchange("/api/invitations", HttpMethod.POST, postInvitationEntity, String.class);
+
+        PostInvitationRequest rejectInvitationRequest = new PostInvitationRequest();
+        rejectInvitationRequest.setUser(testUserInvitationRejectId);
+        rejectInvitationRequest.setOrganization(testOrganizationId);
+
+        HttpEntity<PostInvitationRequest> rejectInvitationEntity = new HttpEntity<>(rejectInvitationRequest, entity.getHeaders());
+
+        return restTemplate.exchange("/api/invitations/reject", HttpMethod.POST, rejectInvitationEntity, String.class);
+    }
 
     @GetMapping("/healthcheck")
     public ResponseEntity<String> healthCheck() {
@@ -403,6 +471,9 @@ public class SmokeTests {
     private void clearTestData() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
 
+        restTemplate.exchange("/api/users/" + testUserInvitationRejectId, HttpMethod.DELETE, entity, String.class);
+        restTemplate.exchange("/api/users/" + testUserInvitationAcceptId, HttpMethod.DELETE, entity, String.class);
+        restTemplate.exchange("/api/users/" + testUserInvitationId, HttpMethod.DELETE, entity, String.class);
         restTemplate.exchange("/api/users/" + testUserId, HttpMethod.DELETE, entity, String.class);
     }
 
