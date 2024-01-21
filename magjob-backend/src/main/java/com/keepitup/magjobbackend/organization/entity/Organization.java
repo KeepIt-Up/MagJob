@@ -38,7 +38,7 @@ public class Organization {
     @Column(name = "profile_banner_url", length = 50)
     private String profileBannerUrl;
 
-    @OneToMany(mappedBy = "organization")
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE)
     private List<Member> members;
 
     @OneToMany(mappedBy = "organization")
