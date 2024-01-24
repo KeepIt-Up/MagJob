@@ -1,5 +1,5 @@
 export interface OrganizationCreation {
-  name: string;
+  name: string,
   profileBannerUrl: string,
-  user: any
+  user: number
 }

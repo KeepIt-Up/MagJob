@@ -23,7 +23,6 @@ export class AddMembersComponent implements OnInit{
 
 
   searchUsers() {
-    // Symulacja pobierania danych z serwisu
     this.userService.getUsers().subscribe((data) => {
       this.users = data.users;
       console.log(this.users);
@@ -40,15 +39,15 @@ export class AddMembersComponent implements OnInit{
   inviteUser(user: any) {
     const invitation: Invitation = {
       user: user.id,
-      organization: this.organizationService.getCurrentOrganizationId().toString()
+      organization: this.organizationService.getCurrentOrganizationId(),
     }
     this.invitationsService.invite(invitation).subscribe(
       (response) => {
-        // Handle successful response
         console.log('Response:', response);
+        this.users.splice(user, 1);
+        this.filteredUsers.splice(user, 1);
       },
       (error) => {
-        // Handle error
         console.error('Error:', error);
       }
     );

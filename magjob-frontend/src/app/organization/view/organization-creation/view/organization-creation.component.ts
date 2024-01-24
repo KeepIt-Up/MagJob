@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrganizationCreation } from "../../../model/organization-creation";
 import { OrganizationCreationService } from '../../organization-creation/service/organization-creation.service';
+import { OrganizationService } from 'src/app/organization/service/organization.service';
 
 @Component({
   selector: 'app-organization-creation',
@@ -20,7 +21,7 @@ export class OrganizationCreationComponent {
   organizationForm: FormGroup;
   selectedBannerUrl: string = '';
 
-  constructor(private organizationService: OrganizationCreationService, private fb: FormBuilder, private router: Router) {
+  constructor(private organizationCreationService: OrganizationCreationService, private fb: FormBuilder, private router: Router, private organizationService: OrganizationService) {
     this.organizationForm = this.fb.group({
       name: ['', Validators.required]
     });
@@ -32,12 +33,13 @@ export class OrganizationCreationComponent {
     if (this.organizationForm.valid) {
       this.organizationModel.name = name;
       this.organizationModel.profileBannerUrl = ""; //this.selectedBannerUrl
-      this.organizationModel.user = localStorage.getItem("User");
+      this.organizationModel.user = parseInt(localStorage.getItem("User") ?? "0");
 
 
-      this.organizationService.createOrganization(this.organizationModel).subscribe(
+      this.organizationCreationService.createOrganization(this.organizationModel).subscribe(
         (response) => {
           console.log('Organization created successfully:', response);
+          this.organizationService.setCurrentOrganizationId(response);
           this.router.navigate(['/organization/'+response.id+'/addMembers']);
         },
         (error) => {

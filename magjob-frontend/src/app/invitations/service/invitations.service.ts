@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { AcceptInvitationRequest } from '../model/AcceptInvitationRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +28,10 @@ export class InvitationsService {
       );
   }
 
-  accept(invitation: Invitation)
+  accept(acceptInvitationRequest: AcceptInvitationRequest)
   {
     const rejectEndpoint = this.apiUrl + '/accept';
-    return this.http.post(rejectEndpoint, invitation);
+    return this.http.post(rejectEndpoint, acceptInvitationRequest);
   }
 
   reject(invitation: Invitation)

@@ -4,6 +4,7 @@
     --Gray: #4A5C6A;
     --Red: #FF1C1C;
     --Black: #1C1C1C;
+    --Green: #00FF19;
     --Warning: var(--Red);
     --Error: var(--Red);
     --Text: var(--Black);
@@ -192,4 +193,9 @@ button {
     line-height: normal;
     text-transform: uppercase;
 
+}
+
+button:hover
+{
+    color: var(--Black);
 }
