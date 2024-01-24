@@ -1,3 +1,4 @@
+import { AcceptInvitationRequest } from './../../../model/AcceptInvitationRequest';
 import { Invitation } from './../../../model/invitation';
 import { UserService } from 'src/app/user/service/user.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,8 +15,8 @@ export class UserInvitationsComponent implements OnInit {
   userId: number | null = null;
 
   constructor(
-    private invitationService: InvitationsService, 
-    private userService: UserService) {}
+    private invitationService: InvitationsService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadInvitations();
@@ -23,8 +24,7 @@ export class UserInvitationsComponent implements OnInit {
 
   loadInvitations() {
     this.userId = this.userService.getCurrentUserId();
-    if(this.userId != null)
-    {
+    if (this.userId != null) {
       this.invitationService.getInvitations(this.userId).subscribe(
         (data) => {
           console.log(data);
@@ -37,11 +37,17 @@ export class UserInvitationsComponent implements OnInit {
     }
   }
 
-  accept(invitation: Invitation): void
-  {
-    this.invitationService.accept(invitation).subscribe(
+  accept(invitation: any): void {
+    const acceptInvitationRequest: AcceptInvitationRequest =
+    {
+      organization: invitation.organizationId,
+      pseudonym: "changeme",
+      user: invitation.userId
+    };
+    this.invitationService.accept(acceptInvitationRequest).subscribe(
       (response) => {
         console.log('Invitation accepted successfully:', response);
+        this.invitations.splice(invitation,1);
       },
       (error) => {
         console.error('Error accepting invitation:', error);
@@ -49,11 +55,16 @@ export class UserInvitationsComponent implements OnInit {
     );
   }
 
-  reject(invitation: Invitation): void 
-  {
-    this.invitationService.reject(invitation).subscribe(
+  reject(invitation: any): void {
+    const rejectInvitationRequest: Invitation =
+    {
+      organization: invitation.organizationId,
+      user: invitation.userId
+    };
+    this.invitationService.reject(rejectInvitationRequest).subscribe(
       (response) => {
         console.log('Invitation rejected successfully:', response);
+        this.invitations.splice(invitation,1);
       },
       (error) => {
         console.error('Error rejecting invitation:', error);
