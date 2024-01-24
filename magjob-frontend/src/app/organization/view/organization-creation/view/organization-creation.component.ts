@@ -33,7 +33,7 @@ export class OrganizationCreationComponent {
     if (this.organizationForm.valid) {
       this.organizationModel.name = name;
       this.organizationModel.profileBannerUrl = ""; //this.selectedBannerUrl
-      this.organizationModel.user = localStorage.getItem("User");
+      this.organizationModel.user = parseInt(localStorage.getItem("User") ?? "0");
 
 
       this.organizationCreationService.createOrganization(this.organizationModel).subscribe(
