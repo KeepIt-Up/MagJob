@@ -11,6 +11,8 @@ import com.keepitup.magjobbackend.user.dto.AuthenticationRequest;
 import com.keepitup.magjobbackend.user.dto.PatchUserRequest;
 import com.keepitup.magjobbackend.user.dto.PostUserRequest;
 import com.keepitup.magjobbackend.user.dto.PutPasswordRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
+@Tag(name = "Smoke Tests Controller")
 @RestController
 public class SmokeTests {
     private static final String USER_FIRSTNAME_TEST_VALUE = "testFirstName";
@@ -103,6 +106,8 @@ public class SmokeTests {
     public SmokeTests(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
+
+    @Operation(summary = "Create User Test")
     @GetMapping("/healthcheck/createUserTest")
     public ResponseEntity<String> createUserTest() throws JSONException {
         PostUserRequest postUserRequest = new PostUserRequest();
@@ -120,6 +125,8 @@ public class SmokeTests {
 
         return response;
     }
+
+    @Operation(summary = "Login Test")
     @GetMapping("/healthcheck/loginTest")
     public ResponseEntity<String> loginTest() {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
@@ -128,6 +135,8 @@ public class SmokeTests {
 
         return restTemplate.postForEntity("/api/users/login", authenticationRequest, String.class);
     }
+
+    @Operation(summary = "Get all Users Test")
     @GetMapping("/healthcheck/getUsersTest")
     public ResponseEntity<String> getUsersTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -135,6 +144,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users", HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Get User Test")
     @GetMapping("/healthcheck/getUserTest")
     public ResponseEntity<String> getUserTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -142,6 +152,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users/" + testUserId, HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Update User Test")
     @GetMapping("/healthcheck/updateUserTest")
     public ResponseEntity<String> updateUserTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -156,6 +167,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users/" + testUserMemberId, HttpMethod.PATCH, requestEntity, String.class);
     }
 
+    @Operation(summary = "Update User Password Test")
     @GetMapping("/healthcheck/updateUserPasswordTest")
     public ResponseEntity<String> updateUserPasswordTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -170,6 +182,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users/" + testUserId, HttpMethod.PUT, requestEntity, String.class);
     }
 
+    @Operation(summary = "Delete User Test")
     @GetMapping("/healthcheck/deleteUserTest")
     public ResponseEntity<String> deleteUserTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -177,6 +190,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users/" + testUserMemberId, HttpMethod.DELETE, entity, String.class);
     }
 
+    @Operation(summary = "Create Organization Test")
     @GetMapping("/healthcheck/createOrganizationTest")
     public ResponseEntity<String> createOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -197,6 +211,7 @@ public class SmokeTests {
         return response;
     }
 
+    @Operation(summary = "Update Organization Test")
     @GetMapping("/healthcheck/updateOrganizationTest")
     public ResponseEntity<String> updateOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -210,6 +225,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/organizations/" + testOrganizationId, HttpMethod.PATCH, requestEntity, String.class);
     }
 
+    @Operation(summary = "Get all Organizations Test")
     @GetMapping("/healthcheck/getOrganizationsTest")
     public ResponseEntity<String> getOrganizationsTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -217,6 +233,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/organizations", HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Get Organization Test")
     @GetMapping("/healthcheck/getOrganizationTest")
     public ResponseEntity<String> getOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -224,6 +241,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/organizations/" + testOrganizationId, HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Get Organizations By User Test")
     @GetMapping("/healthcheck/getOrganizationsByUserTest")
     public ResponseEntity<String> getOrganizationsByUserTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -231,6 +249,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/organizations/users/" + testUserId, HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Delete Organization Test")
     @GetMapping("/healthcheck/deleteOrganizationTest")
     public ResponseEntity<String> deleteOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -238,6 +257,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/organizations/" + testOrganizationId, HttpMethod.DELETE, entity, String.class);
     }
 
+    @Operation(summary = "Get all Members Test")
     @GetMapping("/healthcheck/getMembersTest")
     public ResponseEntity<String> getMembersTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -245,6 +265,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/members", HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Get Member Test")
     @GetMapping("/healthcheck/getMemberTest")
     public ResponseEntity<String> getMemberTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -252,6 +273,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/members/" + testMemberId, HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Update Member Test")
     @GetMapping("/healthcheck/updateMemberTest")
     public ResponseEntity<String> updateMemberTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -264,6 +286,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/members/" + testMemberId, HttpMethod.PATCH, requestEntity, String.class);
     }
 
+    @Operation(summary = "Get Members By Organization Test")
     @GetMapping("/healthcheck/getMembersByOrganizationTest")
     public ResponseEntity<String> getMembersByOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -285,6 +308,7 @@ public class SmokeTests {
         return response;
     }
 
+    @Operation(summary = "Create Member Test")
     @GetMapping("/healthcheck/createMemberTest")
     public ResponseEntity<String> createMemberTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -310,6 +334,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/members", HttpMethod.POST, requestEntity, String.class);
     }
 
+    @Operation(summary = "Delete Member Test")
     @GetMapping("/healthcheck/deleteMemberTest")
     public ResponseEntity<String> deleteMemberTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -317,6 +342,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/members/" + testMemberId, HttpMethod.DELETE, entity, String.class);
     }
 
+    @Operation(summary = "Send Invitation Test")
     @GetMapping("/healthcheck/sendInvitationTest")
     public ResponseEntity<String> sendInvitationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -341,6 +367,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/invitations", HttpMethod.POST, requestEntity, String.class);
     }
 
+    @Operation(summary = "Get Invitations By Organization Test")
     @GetMapping("/healthcheck/getInvitationsByOrganizationTest")
     public ResponseEntity<String> getInvitationsByOrganizationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -348,6 +375,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/organizations/" + testOrganizationId + "/invitations", HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Get Invitations By User Test")
     @GetMapping("/healthcheck/getInvitationsByUserTest")
     public ResponseEntity<String> getInvitationsByUserTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -355,6 +383,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/users/" + testUserInvitationId + "/invitations", HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Get Invitation Test")
     @GetMapping("/healthcheck/getInvitationTest")
     public ResponseEntity<String> getInvitationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -362,6 +391,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/invitations/" + testUserInvitationId + "/" + testOrganizationId, HttpMethod.GET, entity, String.class);
     }
 
+    @Operation(summary = "Delete Invitation Test")
     @GetMapping("/healthcheck/deleteInvitationTest")
     public ResponseEntity<String> deleteInvitationTest() throws JSONException {
         HttpEntity<String> entity = createHttpEntityWithAuthenticatedTestUserCredentials(USER_EMAIL_TEST_VALUE, testUserPassword);
@@ -369,6 +399,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/invitations/" + testUserInvitationId + "/" + testOrganizationId, HttpMethod.DELETE, entity, String.class);
     }
 
+    @Operation(summary = "Accept Invitation Test")
     @GetMapping("/healthcheck/acceptInvitationTest")
     public ResponseEntity<String> acceptInvitationTest() throws JSONException {
         PostUserRequest postUserRequest = new PostUserRequest();
@@ -402,6 +433,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/invitations/accept", HttpMethod.POST, acceptInvitationEntity, String.class);
     }
 
+    @Operation(summary = "Reject Invitation Test")
     @GetMapping("/healthcheck/rejectInvitationTest")
     public ResponseEntity<String> rejectInvitationTest() throws JSONException {
         PostUserRequest postUserRequest = new PostUserRequest();
@@ -434,6 +466,7 @@ public class SmokeTests {
         return restTemplate.exchange("/api/invitations/reject", HttpMethod.POST, rejectInvitationEntity, String.class);
     }
 
+    @Operation(summary = "Healthcheck", description = "Perform app healthcheck by executing all test endpoints")
     @GetMapping("/healthcheck")
     public ResponseEntity<String> healthCheck() {
         try {
