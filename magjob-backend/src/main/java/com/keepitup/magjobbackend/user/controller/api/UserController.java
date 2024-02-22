@@ -1,11 +1,9 @@
 package com.keepitup.magjobbackend.user.controller.api;
 
 import com.keepitup.magjobbackend.user.dto.*;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.math.BigInteger;
 
 public interface UserController {
@@ -57,13 +55,4 @@ public interface UserController {
             @RequestBody
             PutPasswordRequest putPasswordRequest
     );
-
-    @PostMapping("/api/users/login")
-    @ResponseStatus(HttpStatus.OK)
-    AuthenticationResponse createAuthenticationToken(
-            @RequestBody
-            AuthenticationRequest authenticationRequest,
-            HttpServletResponse response
-    ) throws IOException;
-
 }

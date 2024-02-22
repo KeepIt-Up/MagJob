@@ -1,13 +1,11 @@
 package com.keepitup.magjobbackend.smoketests;
 
 import com.keepitup.magjobbackend.invitation.dto.AcceptInvitationRequest;
-import com.keepitup.magjobbackend.invitation.dto.GetInvitationsResponse;
 import com.keepitup.magjobbackend.invitation.dto.PostInvitationRequest;
 import com.keepitup.magjobbackend.member.dto.PatchMemberRequest;
 import com.keepitup.magjobbackend.member.dto.PostMemberRequest;
 import com.keepitup.magjobbackend.organization.dto.PatchOrganizationRequest;
 import com.keepitup.magjobbackend.organization.dto.PostOrganizationRequest;
-import com.keepitup.magjobbackend.user.dto.AuthenticationRequest;
 import com.keepitup.magjobbackend.user.dto.PatchUserRequest;
 import com.keepitup.magjobbackend.user.dto.PostUserRequest;
 import com.keepitup.magjobbackend.user.dto.PutPasswordRequest;
@@ -120,7 +118,8 @@ public class SmokeTests {
 
         return response;
     }
-    @GetMapping("/healthcheck/loginTest")
+    // DEPRECATED
+    /*@GetMapping("/healthcheck/loginTest")
     public ResponseEntity<String> loginTest() {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
         authenticationRequest.setEmail(USER_EMAIL_TEST_VALUE);
@@ -493,5 +492,5 @@ public class SmokeTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         return new HttpEntity<>(headers);
-    }
+    }*/
 }
