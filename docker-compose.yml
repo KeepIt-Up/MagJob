@@ -6,6 +6,7 @@ services:
     restart: always
     depends_on:
       - pgadmin
+      - keycloak
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
 
@@ -19,6 +20,43 @@ services:
     depends_on:
       - magjob-backend
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.7
+    ports:
+      - "28080:8080"
+      - "28443:8443"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=keycloak-db
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=admin
+      - KC_HOSTNAME=localhost
+      - KC_HTTPS_CERTIFICATE_FILE=./etc/ssl/certs/cert.pem
+      - KC_HTTPS_CERTIFICATE_KEY_FILE=./etc/ssl/certs/cert-key.pem
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_HOSTNAME_STRICT_HTTPS=false
+    volumes:
+      - ./keycloak/certs/cert.pem:/etc/ssl/certs/cert.pem
+      - ./keycloak/certs/cert-key.pem:/etc/ssl/certs/cert-key.pem
+    depends_on:
+      - keycloak-db
+    command: start
+
+  keycloak-db:
+    image: postgres:15.5-bullseye
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./MagJob-test-data/keycloak-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=keycloak
+
   db:
     image: postgres:15.5-bullseye
     restart: always
@@ -29,7 +67,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
-      - POSTGRES_DB=postgres
+      - POSTGRES_D=postgres
 
   pgadmin:
     image: dpage/pgadmin4:2023-11-20-2
@@ -43,6 +81,7 @@ services:
       - ./MagJob-test-data/pgadmin:/var/lib/pgadmin/data
     depends_on:
       - db
+      - keycloak-db
 
   prometheus:
     image: prom/prometheus:v2.48.0
