@@ -68,7 +68,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
-      - POSTGRES_D=postgres
+      - POSTGRES_DB=postgres
 
   pgadmin:
     image: dpage/pgadmin4:2023-11-20-2
