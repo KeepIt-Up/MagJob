@@ -16,8 +16,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
     private static final AntPathRequestMatcher[] permitAllList = {
-            new AntPathRequestMatcher("/api/users", "POST"),
-            new AntPathRequestMatcher("/api/users/login")
+            /*new AntPathRequestMatcher("/api/users", "POST"),
+            new AntPathRequestMatcher("/api/users/login")*/
     };
 
     private static final AntPathRequestMatcher[] authenticatedList = {
