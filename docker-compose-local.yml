@@ -9,12 +9,6 @@ services:
       - keycloak
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   magjob-frontend:
     image: magjob-frontend:0.0.1
@@ -25,12 +19,6 @@ services:
       - "8080:80"
     depends_on:
       - magjob-backend
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.7
@@ -38,12 +26,12 @@ services:
       - "28080:8080"
       - "28443:8443"
     environment:
-      - KEYCLOAK_ADMIN=${KC_ADMIN}
-      - KEYCLOAK_ADMIN_PASSWORD=${KC_ADMIN_PASSWORD}
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_DB=postgres
       - KC_DB_URL_HOST=keycloak-db
-      - KC_DB_USERNAME=${KC_DB_USER}
-      - KC_DB_PASSWORD=${KC_DB_PASSWORD}
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=admin
       - KC_HOSTNAME=localhost
       - KC_HTTPS_CERTIFICATE_FILE=./etc/ssl/certs/cert.pem
       - KC_HTTPS_CERTIFICATE_KEY_FILE=./etc/ssl/certs/cert-key.pem
@@ -53,15 +41,10 @@ services:
     volumes:
       - ./keycloak/certs/cert.pem:/etc/ssl/certs/cert.pem
       - ./keycloak/certs/cert-key.pem:/etc/ssl/certs/cert-key.pem
+      - ./keycloak/magjob-theme:/opt/keycloak/themes/magjob-theme
     depends_on:
       - keycloak-db
     command: start
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   keycloak-db:
     image: postgres:15.5-bullseye
@@ -69,17 +52,11 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./db/keycloak-data:/var/lib/postgresql/data
+      - ./MagJob-test-data/keycloak-db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=${KC_DB_PASSWORD}
-      - POSTGRES_USER=${KC_DB_USER}
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
       - POSTGRES_DB=keycloak
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   db:
     image: postgres:15.5-bullseye
@@ -87,17 +64,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./db/data:/var/lib/postgresql/data
+      - ./MagJob-test-data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
       - POSTGRES_DB=postgres
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   pgadmin:
     image: dpage/pgadmin4:2023-11-20-2
@@ -105,19 +76,13 @@ services:
     ports:
       - "5050:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
-      - ./db/pgadmin:/var/lib/pgadmin/data
+      - ./MagJob-test-data/pgadmin:/var/lib/pgadmin/data
     depends_on:
       - db
       - keycloak-db
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   prometheus:
     image: prom/prometheus:v2.48.0
@@ -126,15 +91,9 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./MagJob-backend/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - magjob-frontend
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
 
   grafana:
     image: grafana/grafana:10.2.1
@@ -143,12 +102,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./MagJob-backend/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     depends_on:
       - prometheus
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 2
-        window: 70s
