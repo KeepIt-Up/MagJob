@@ -15,4 +15,4 @@ cp .env MagJob
 
 cd MagJob
 
-docker stack deploy -c docker-compose.yml $STACK_NAME --with-registry-auth
+$(cat .env | sed 's/^/export /') && docker stack deploy -c docker-compose.yml $STACK_NAME --with-registry-auth
