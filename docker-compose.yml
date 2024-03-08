@@ -62,6 +62,7 @@ services:
         delay: 5s
         max_attempts: 2
         window: 70s
+     env_file: .env
 
   keycloak-db:
     image: postgres:15.5-bullseye
@@ -80,6 +81,7 @@ services:
         delay: 5s
         max_attempts: 2
         window: 70s
+     env_file: .env
 
   db:
     image: postgres:15.5-bullseye
@@ -98,6 +100,7 @@ services:
         delay: 5s
         max_attempts: 2
         window: 70s
+     env_file: .env
 
   pgadmin:
     image: dpage/pgadmin4:2023-11-20-2
@@ -118,6 +121,7 @@ services:
         delay: 5s
         max_attempts: 2
         window: 70s
+     env_file: .env
 
   prometheus:
     image: prom/prometheus:v2.48.0
