@@ -69,7 +69,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./db/keycloak-data:/var/lib/postgresql/data
+      - keycloak-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=${KC_DB_PASSWORD}
       - POSTGRES_USER=${KC_DB_USER}
@@ -87,7 +87,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./db/data:/var/lib/postgresql/data
+      - data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_USER=${DB_USER}
@@ -108,7 +108,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     volumes:
-      - ./db/pgadmin:/var/lib/pgadmin/data
+      - pgadmin:/var/lib/pgadmin/data
     depends_on:
       - db
       - keycloak-db
@@ -126,7 +126,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/etc/prometheus
     depends_on:
       - magjob-frontend
     deploy:
@@ -143,7 +143,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana:/etc/grafana/provisioning/datasources
     depends_on:
       - prometheus
     deploy:
@@ -152,3 +152,30 @@ services:
         delay: 5s
         max_attempts: 2
         window: 70s
+
+  volumes:
+    data:
+      driver_opts:
+        type: none
+        o: bind
+        device: ./db/data
+    keycloak-data:
+      driver_opts:
+        type: none
+        o: bind
+        device: ./db/keycloak-data
+    pgadmin:
+      driver_opts:
+        type: none
+        o: bind
+        device: ./db/pgadmin
+    prometheus:
+      driver_opts:
+        type: none
+        o: bind
+        device: ./monitoring/prometheus
+    grafana:
+      driver_opts:
+        type: none
+        o: bind
+        device: ./monitoring/grafana/provisioning/datasources
