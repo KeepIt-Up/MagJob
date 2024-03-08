@@ -155,27 +155,7 @@ services:
 
 volumes:
   data:
-    driver_opts:
-      type: none
-      o: bind
-      device: ./db/data
   keycloak-data:
-    driver_opts:
-      type: none
-      o: bind
-      device: ./db/keycloak-data
   pgadmin:
-    driver_opts:
-      type: none
-      o: bind
-      device: ./db/pgadmin
   prometheus:
-    driver_opts:
-      type: none
-      o: bind
-      device: ./monitoring/prometheus
   grafana:
-    driver_opts:
-      type: none
-      o: bind
-      device: ./monitoring/grafana/provisioning/datasources
