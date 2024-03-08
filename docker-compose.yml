@@ -2,7 +2,7 @@ version: '3'
 
 services:
   magjob-backend:
-    image: magjob-backend:0.0.1
+    image: keepitup2023/magjob-backend:0.0.1
     restart: always
     depends_on:
       - pgadmin
@@ -17,7 +17,7 @@ services:
         window: 70s
 
   magjob-frontend:
-    image: magjob-frontend:0.0.1
+    image: keepitup2023/magjob-frontend:0.0.1
     restart: always
     environment:
       API_URL: http://magjob-backend:8080/api
