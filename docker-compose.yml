@@ -51,8 +51,7 @@ services:
       - KC_METRICS_ENABLED=true
       - KC_HOSTNAME_STRICT_HTTPS=false
     volumes:
-      - ./keycloak/certs/cert.pem:/etc/ssl/certs/cert.pem
-      - ./keycloak/certs/cert-key.pem:/etc/ssl/certs/cert-key.pem
+      - keycloak:/etc/ssl/certs
     depends_on:
       - keycloak-db
     command: start
