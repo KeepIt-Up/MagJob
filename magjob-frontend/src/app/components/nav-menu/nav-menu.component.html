@@ -1,21 +1,22 @@
-
-    <div class="logo">
-      <a class="" [routerLink]="['/']">MagJob</a>
-    </div>
-    <div class="navbar">
-      <ul class="navbar-list">
-
-        <li class="nav-item" *ngIf="!isLoggedIn()" [routerLinkActive]="['link-active']">
-          <a [routerLink]="['/login']">Login</a>
-        </li>
-        <li class="nav-item second" *ngIf="!isLoggedIn()" [routerLinkActive]="['link-active']">
-          <a [routerLink]="['/register']">Register</a>
-        </li>
-        <li class="nav-item second" *ngIf="isLoggedIn()" [routerLinkActive]="['link-active']">
-          <a  [routerLink]="['/user', getUserId()]">Profile</a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedIn()" [routerLinkActive]="['link-active']">
-          <a [routerLink]="['/']" (click)="logout()">Logout</a>
-        </li>
-      </ul>
-    </div>
+<div class="logo">
+  <a class="" [routerLink]="['/']">MagJob</a>
+</div>
+<div class="navbar-organization" *ngIf="currentRoute.startsWith('/organization') || currentRoute.startsWith('/user')|| currentRoute.startsWith('/create-organization')">
+  <app-select-bar></app-select-bar>
+</div>
+<div class="navbar">
+  <ul class="navbar-list">
+    <li class="nav-item" *ngIf="!isLoggedIn()" [routerLinkActive]="['link-active']">
+      <a [routerLink]="['/login']">Login</a>
+    </li>
+    <li class="nav-item second" *ngIf="!isLoggedIn()" [routerLinkActive]="['link-active']">
+      <a [routerLink]="['/register']">Register</a>
+    </li>
+    <li class="nav-item second" *ngIf="isLoggedIn()" [routerLinkActive]="['link-active']">
+      <a  [routerLink]="['/user', getUserId()]">Profile</a>
+    </li>
+    <li class="nav-item" *ngIf="isLoggedIn()" [routerLinkActive]="['link-active']">
+      <a [routerLink]="['/']" (click)="logout()">Logout</a>
+    </li>
+  </ul>
+</div>

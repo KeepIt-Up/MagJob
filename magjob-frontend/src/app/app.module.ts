@@ -29,6 +29,7 @@ import { EditMemberComponent } from './organization/components/organization-memb
 import { OrganizationScheduleComponent } from './organization/components/organization-schedule/organization-schedule.component';
 import { OrganizationTasksComponent } from './organization/components/organization-tasks/organization-tasks.component';
 import { OrganizationDocumentsComponent } from './organization/components/organization-documents/organization-documents.component';
+import { SelectBarComponent } from './components/select-bar/select-bar.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { OrganizationDocumentsComponent } from './organization/components/organi
     EditMemberComponent,
     OrganizationScheduleComponent,
     OrganizationTasksComponent,
-    OrganizationDocumentsComponent
+    OrganizationDocumentsComponent,
+    SelectBarComponent
   ],
   imports: [
     BrowserModule,
