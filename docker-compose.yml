@@ -33,10 +33,7 @@ services:
         window: 70s
 
   keycloak:
-    build:
-      context: ./images/keycloak
-      args:
-        KEYCLOAK_VERSION: 23.0.7
+    image: keycloak
     command: ['start', '--optimized', '--import-realm']
     depends_on:
       - keycloak-db
@@ -117,9 +114,7 @@ services:
         window: 70s
 
   prometheus:
-    build:
-      context: ./images/prometheus
-    #image: prom/prometheus:v2.48.0
+    image: prometheus
     container_name: prometheus
     restart: always
     ports:
@@ -134,9 +129,7 @@ services:
         window: 70s
 
   grafana:
-    build:
-      context: ./images/grafana
-    #image: grafana/grafana:10.2.1
+    image: grafana
     container_name: grafana
     restart: always
     ports:
