@@ -32,7 +32,7 @@ services:
         max_attempts: 2
         window: 70s
 
-   keycloak:
+  keycloak:
     build:
       context: ./images/keycloak
       args:
