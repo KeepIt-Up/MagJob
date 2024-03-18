@@ -34,6 +34,11 @@
         name: docker-compose
         executable: pip3
 
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+
     - name: Install NFS utilities
       yum:
         name: nfs-utils
