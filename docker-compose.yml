@@ -133,7 +133,7 @@ services:
         max_attempts: 2
         window: 70s
 
-  grafana:
+   grafana:
     build:
       context: ./images/grafana
     #image: grafana/grafana:10.2.1
