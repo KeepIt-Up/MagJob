@@ -1,0 +1,30 @@
+- name: Setup NFS server
+  hosts: nfs
+  become: yes
+
+  tasks:
+    - name: Update package repository
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install NFS utilities
+      yum:
+        name: nfs-utils
+        state: present
+
+    - name: Check if lines exist in /etc/exports
+      shell: grep -qxF "/home/ec2-user/volume/db *(rw,sync,no_root_squash)" /etc/exports || echo "/home/ec2-user/volume/db *(rw,sync,no_root_squash)" >> /etc/exports
+      register: line_added
+      changed_when: line_added.stdout != ""
+
+    - name: Check if lines exist in /etc/exports (second line)
+      shell: grep -qxF "/home/ec2-user/volume/db *(rw,sync,no_root_squash)" /etc/exports || echo "/home/ec2-user/volume/db *(rw,sync,no_root_squash)" >> /etc/exports
+      register: second_line_added
+      changed_when: second_line_added.stdout != ""
+
+    - name: Start NFS server service
+      systemd:
+        name: nfs-server
+        state: started
+        enabled: yes
