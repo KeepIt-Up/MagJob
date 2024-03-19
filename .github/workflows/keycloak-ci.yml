@@ -15,7 +15,7 @@ jobs:
       - name: Build and push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v4
         with:
-          image: keepitup2023/magjob-frontend:latest
+          image: keepitup2023/magjob-keycloak:latest
           registry: docker.io
           dockerfile: images/keycloak/Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
