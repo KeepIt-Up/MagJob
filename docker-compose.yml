@@ -29,14 +29,10 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
-        max_attempts: 2
         window: 70s
 
-   keycloak:
-    build:
-      context: ./images/keycloak
-      args:
-        KEYCLOAK_VERSION: 23.0.7
+  keycloak:
+    image: keepitup2023/magjob-keycloak:0.0.1
     command: ['start', '--optimized', '--import-realm']
     depends_on:
       - keycloak-db
@@ -50,8 +46,8 @@ services:
       KC_METRICS_ENABLED: 'true'
       KC_HOSTNAME_URL: http://localhost:8180
       KC_PROXY: reencrypt
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: ${KC_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_PASSWORD}
     ports:
       - "8180:8080"
       - "8787:8787" # debug port
@@ -117,9 +113,7 @@ services:
         window: 70s
 
   prometheus:
-    build:
-      context: ./images/prometheus
-    #image: prom/prometheus:v2.48.0
+    image: keepitup2023/magjob-prometheus:0.0.1
     container_name: prometheus
     restart: always
     ports:
@@ -133,10 +127,8 @@ services:
         max_attempts: 2
         window: 70s
 
-   grafana:
-    build:
-      context: ./images/grafana
-    #image: grafana/grafana:10.2.1
+  grafana:
+    image: keepitup2023/magjob-grafana:0.0.1
     container_name: grafana
     restart: always
     ports:
