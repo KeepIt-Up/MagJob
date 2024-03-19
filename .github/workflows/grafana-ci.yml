@@ -15,8 +15,8 @@ jobs:
       - name: Build and push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v4
         with:
-          image: keepitup2023/magjob-grafana:latest
-          registry: docker.io
-          dockerfile: images/grafana/Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+            image: keepitup2023/magjob-grafana:latest
+            registry: docker.io
+            dockerfile: images/grafana/Dockerfile
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
