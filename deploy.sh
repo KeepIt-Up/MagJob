@@ -15,8 +15,4 @@ cp .env MagJob
 
 cd MagJob
 
-docker build -t keycloak -f images/keycloak/Dockerfile .
-docker build -t prometheus -f images/prometheus/Dockerfile .
-docker build -t grafana -f images/grafana/Dockerfile .
-
 $(cat .env | sed 's/^/export /') && docker stack deploy -c docker-compose.yml $STACK_NAME --with-registry-auth

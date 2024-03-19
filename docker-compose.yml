@@ -32,7 +32,7 @@ services:
         window: 70s
 
   keycloak:
-    image: keycloak
+    image: keepitup2023/magjob-keycloak:0.0.1
     command: ['start', '--optimized', '--import-realm']
     depends_on:
       - keycloak-db
@@ -113,7 +113,7 @@ services:
         window: 70s
 
   prometheus:
-    image: prometheus
+    image: keepitup2023/magjob-prometheus:0.0.1
     container_name: prometheus
     restart: always
     ports:
@@ -128,7 +128,7 @@ services:
         window: 70s
 
   grafana:
-    image: grafana
+    image: keepitup2023/magjob-grafana:0.0.1
     container_name: grafana
     restart: always
     ports:
