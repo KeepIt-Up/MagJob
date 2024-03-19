@@ -8,15 +8,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy-to-registry-keycloak:
+  build-and-deploy-to-registry-grafana:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Build and push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v4
         with:
-            image: keepitup2023/magjob-grafana:latest
-            registry: docker.io
-	    dockerfile: images/grafana/Dockerfile
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+          image: keepitup2023/magjob-grafana:latest
+          registry: docker.io
+          dockerfile: images/grafana/Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
