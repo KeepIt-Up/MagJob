@@ -21,30 +21,32 @@ services:
       - magjob-backend
 
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0.7
-    ports:
-      - "28080:8080"
-      - "28443:8443"
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-      - KC_DB=postgres
-      - KC_DB_URL_HOST=keycloak-db
-      - KC_DB_USERNAME=admin
-      - KC_DB_PASSWORD=admin
-      - KC_HOSTNAME=localhost
-      - KC_HTTPS_CERTIFICATE_FILE=./etc/ssl/certs/cert.pem
-      - KC_HTTPS_CERTIFICATE_KEY_FILE=./etc/ssl/certs/cert-key.pem
-      - KC_HEALTH_ENABLED=true
-      - KC_METRICS_ENABLED=true
-      - KC_HOSTNAME_STRICT_HTTPS=false
-    volumes:
-      - ./keycloak/certs/cert.pem:/etc/ssl/certs/cert.pem
-      - ./keycloak/certs/cert-key.pem:/etc/ssl/certs/cert-key.pem
-      - ./keycloak/magjob-theme:/opt/keycloak/themes/magjob-theme
+    container_name: keycloak
+    build:
+      context: .
+      dockerfile: ./images/keycloak/Dockerfile
+      args:
+        KEYCLOAK_VERSION: 22.0.0
+    command: ['start', '--optimized', '--import-realm']
     depends_on:
-      - keycloak-db
-    command: start
+      - "postgres"
+    environment:
+      JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.upload_scripts=enabled
+      KC_DB_PASSWORD: admin
+      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
+      KC_DB_USERNAME: admin
+      KC_HEALTH_ENABLED: 'true'
+      KC_HTTP_ENABLED: 'true'
+      KC_METRICS_ENABLED: 'true'
+      KC_HOSTNAME_URL: http://localhost:8180
+      KC_PROXY: reencrypt
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8180:8080"
+      - "8787:8787" # debug port
+    volumes:
+      - ./images/keycloak/magjob-realm.json:/opt/keycloak/data/import/magjob-realm.json
 
   keycloak-db:
     image: postgres:15.5-bullseye
