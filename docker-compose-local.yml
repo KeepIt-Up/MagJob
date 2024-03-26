@@ -29,7 +29,7 @@ services:
         KEYCLOAK_VERSION: 22.0.0
     command: ['start', '--optimized', '--import-realm']
     depends_on:
-      - "postgres"
+      - "keycloak-db"
     environment:
       JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.upload_scripts=enabled
       KC_DB_PASSWORD: admin
