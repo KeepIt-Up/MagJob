@@ -2,6 +2,12 @@
 
 MagJob is an application supporting work and communication in companies and organizations.
 
+![LoginPage](/screenshots/Login.png)
+![Organization Home Page](/screenshots/OrganizationHome.png)
+![Task with chat room](/screenshots/TaskDetails.png)
+
+
+
 **WARNING**  
 - Please be aware that certain features may be unavailable or incomplete during this phase.
 - Work is actively underway to finalize preliminary tasks and implement necessary security measures.
