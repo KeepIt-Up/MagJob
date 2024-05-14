@@ -16,6 +16,29 @@ services:
         max_attempts: 2
         window: 70s
 
+  magjob-swagger-server-handler:
+    image: keepitup2023/magjob-swagger-server-handler:0.0.1
+    restart: always
+    depends_on:
+      - magjob-backend
+    environment:
+      SWAGGER_URL: http://magjob-backend:8080/v3/api-docs
+      WAIT_TIME: 120
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/swagger.json
+
+  magjob-swagger-server:
+    image: swaggerapi/swagger-ui:latest
+    restart: always
+    ports:
+      - "6969:8080"
+    depends_on:
+      - magjob-swagger-server-handler
+    environment:
+      SWAGGER_JSON: /mnt/swagger.json
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/mnt/swagger.json
+
   magjob-frontend:
     image: keepitup2023/magjob-frontend:0.0.1
     restart: always

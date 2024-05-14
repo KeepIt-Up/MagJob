@@ -10,6 +10,32 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
 
+  magjob-swagger-server-handler:
+    image: keepitup2023/magjob-swagger-server-handler:0.0.1
+    restart: always
+    # depends_on:
+      # comment if you want to use locally launched API
+      # - magjob-backend
+    environment:
+      # change if you want to use locally launched API
+      SWAGGER_URL: http://host.docker.internal:8080/v3/api-docs
+      # SWAGGER_URL: http://magjob-backend:8080/v3/api-docs
+      WAIT_TIME: 2
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/swagger.json
+
+  magjob-swagger-server:
+    image: swaggerapi/swagger-ui:latest
+    restart: always
+    ports:
+      - "6969:8080"
+    depends_on:
+      - magjob-swagger-server-handler
+    environment:
+      SWAGGER_JSON: /mnt/swagger.json
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/mnt/swagger.json
+
   magjob-frontend:
     image: magjob-frontend:0.0.1
     restart: always
