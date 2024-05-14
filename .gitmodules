@@ -7,3 +7,6 @@
 [submodule "MagJob-frontend"]
 	path = MagJob-frontend
 	url = https://github.com/KeepIt-Up/MagJob-frontend
+[submodule "MagJob-swagger-server"]
+	path = MagJob-swagger-server
+	url = https://github.com/KeepIt-Up/MagJob-swagger-server
