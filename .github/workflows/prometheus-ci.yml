@@ -13,9 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build and push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v4
+        uses: mr-smithers-excellent/docker-build-push@v6
         with:
-            image: keepitup2023/magjob-prometheus:latest
+            image: keepitup2023/magjob-prometheus
+            tags: latest
             registry: docker.io
             dockerfile: images/prometheus/Dockerfile
             username: ${{ secrets.DOCKER_USERNAME }}
