@@ -13,9 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build and push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v4
+        uses: mr-smithers-excellent/docker-build-push@v6
         with:
-            image: keepitup2023/magjob-grafana:latest
+            image: keepitup2023/magjob-grafana
+            tags: latest
             registry: docker.io
             dockerfile: images/grafana/Dockerfile
             username: ${{ secrets.DOCKER_USERNAME }}
