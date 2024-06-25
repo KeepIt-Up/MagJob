@@ -10,6 +10,6 @@ RUN /opt/keycloak/bin/kc.sh build
 
 FROM quay.io/keycloak/keycloak:23.0.7
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
-COPY /images/keycloak/magjob-realm.json /opt/keycloak/data/import/magjob-realm.json
+COPY ./magjob-realm.json /opt/keycloak/data/import/magjob-realm.json
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
