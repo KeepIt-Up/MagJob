@@ -2,15 +2,10 @@
 
 MagJob is an application supporting work and communication in companies and organizations.
 
-<<<<<<< HEAD
 ![LoginPage](/screenshots/Login.png)
 ![Organization Home Page](/screenshots/OrganizationHome.png)
 ![Task with chat room](/screenshots/TaskDetails.png)
 
-
-
-=======
->>>>>>> beaa77a04ceebd36fd8e9a36a37f9af37219e300
 **WARNING**  
 - Please be aware that certain features may be unavailable or incomplete during this phase.
 - Work is actively underway to finalize preliminary tasks and implement necessary security measures.
@@ -27,8 +22,7 @@ Clone the project
 ```bash
   git clone https://github.com/KeepIt-Up/MagJob.git
 ```
-<<<<<<< HEAD
-=======
+
 ### Run with Docker
 Before you begin, ensure that you have the following tools installed on your system:
 
@@ -50,7 +44,6 @@ Run *docker-compose.yml* with docker compose up
 ```bash
   docker-compose -f docker-compose.yml up  
 ```
->>>>>>> beaa77a04ceebd36fd8e9a36a37f9af37219e300
 
 ### Run Frontend App
 Before running the MagJob Frontend locally, ensure you have the following prerequisites installed on your system:
@@ -94,7 +87,6 @@ Run the Spring Boot Application
   java -jar target/MagJobBackendApplication.jar
 ```
 Once the application is running, you can access it locally by navigating to http://localhost:8080 in your web browser.
-<<<<<<< HEAD
 
 ### Set Database
 Before running the MagJob Backend locally, ensure you have the following prerequisites installed on your system:
@@ -105,8 +97,6 @@ In pgAdmin do the following steps:
 - Create database: (name: "postgres", Owner: admin) 
     or only change the owner of the database
 
-=======
->>>>>>> beaa77a04ceebd36fd8e9a36a37f9af37219e300
 ## Roadmap
 
 - [x]   Login and Registration
