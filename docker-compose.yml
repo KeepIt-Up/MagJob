@@ -1,0 +1,166 @@
+version: '3'
+
+services:
+  magjob-backend:
+    image: keepitup2023/magjob-backend:0.0.1
+    restart: always
+    depends_on:
+      - pgadmin
+      - keycloak
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s
+
+  magjob-swagger-server-handler:
+    image: keepitup2023/magjob-swagger-server-handler:0.0.1
+    restart: always
+    depends_on:
+      - magjob-backend
+    environment:
+      SWAGGER_URL: http://magjob-backend:8080/v3/api-docs
+      WAIT_TIME: 120
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/swagger.json
+
+  magjob-swagger-server:
+    image: swaggerapi/swagger-ui:latest
+    restart: always
+    ports:
+      - "6969:8080"
+    depends_on:
+      - magjob-swagger-server-handler
+    environment:
+      SWAGGER_JSON: /mnt/swagger.json
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/mnt/swagger.json
+
+  magjob-frontend:
+    image: keepitup2023/magjob-frontend:0.0.1
+    restart: always
+    environment:
+      API_URL: http://magjob-backend:8080/api
+    ports:
+      - "8080:80"
+    depends_on:
+      - magjob-backend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 70s
+
+  keycloak:
+    image: keepitup2023/magjob-keycloak:0.0.1
+    command: ['start', '--optimized', '--import-realm']
+    depends_on:
+      - keycloak-db
+    environment:
+      JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.upload_scripts=enabled
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
+      KC_DB_USERNAME: ${KC_DB_USER}
+      KC_HEALTH_ENABLED: 'true'
+      KC_HTTP_ENABLED: 'true'
+      KC_METRICS_ENABLED: 'true'
+      KC_HOSTNAME_URL: http://localhost:8180
+      KC_PROXY: reencrypt
+      KEYCLOAK_ADMIN: ${KC_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_PASSWORD}
+    ports:
+      - "8180:8080"
+      - "8787:8787" # debug port
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s
+
+  keycloak-db:
+    image: postgres:15.5-bullseye
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - /mnt/keycloak-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${KC_DB_PASSWORD}
+      - POSTGRES_USER=${KC_DB_USER}
+      - POSTGRES_DB=keycloak
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s
+
+  db:
+    image: postgres:15.5-bullseye
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - /mnt/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s
+
+  pgadmin:
+    image: dpage/pgadmin4:2023-11-20-2
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    depends_on:
+      - db
+      - keycloak-db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s
+
+  prometheus:
+    image: keepitup2023/magjob-prometheus:0.0.1
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    depends_on:
+      - magjob-frontend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s
+
+  grafana:
+    image: keepitup2023/magjob-grafana:0.0.1
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 70s

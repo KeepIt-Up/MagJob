@@ -1,0 +1,69 @@
+- name: Prepare nodes
+  hosts: nodes
+  become: yes
+
+  tasks:
+    - name: Update package repository
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+
+    - name: Add user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+
+    - name: Enable Docker service on boot
+      service:
+        name: docker
+        enabled: yes
+
+    - name: Install Docker Compose
+      pip:
+        name: docker-compose
+        executable: pip3
+
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+
+    - name: Install NFS utilities
+      yum:
+        name: nfs-utils
+        state: present
+
+    - name: Create directory /mnt/db
+      file:
+        path: /mnt/db
+        state: directory
+
+    - name: Create directory /mnt/keycloak-db
+      file:
+        path: /mnt/keycloak-db
+        state: directory
+
+    - name: Mount NFS share /home/ec2-user/volume/db to /mnt/db
+      mount:
+        path: /mnt/db
+        src: <private ip of nfs>:/home/ec2-user/volume/db
+        fstype: nfs
+        state: mounted
+
+    - name: Mount NFS share /home/ec2-user/volume/keycloak-db to /mnt/keycloak-db
+      mount:
+        path: /mnt/keycloak-db
+        src: <private ip of nfs>:/home/ec2-user/volume/keycloak-db
+        fstype: nfs
+        state: mounted

@@ -1,0 +1,23 @@
+name: magjob prometheus CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - images/prometheus/**
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy-to-registry-prometheus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+            image: keepitup2023/magjob-prometheus
+            tags: latest
+            registry: docker.io
+            dockerfile: images/prometheus/Dockerfile
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}

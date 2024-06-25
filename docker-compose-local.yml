@@ -1,0 +1,129 @@
+version: '3'
+
+services:
+  magjob-backend:
+    image: magjob-backend:0.0.1
+    restart: always
+    depends_on:
+      - pgadmin
+      - keycloak
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+
+  magjob-swagger-server-handler:
+    image: keepitup2023/magjob-swagger-server-handler:0.0.1
+    restart: always
+    # depends_on:
+      # comment if you want to use locally launched API
+      # - magjob-backend
+    environment:
+      # change if you want to use locally launched API
+      SWAGGER_URL: http://host.docker.internal:8080/v3/api-docs
+      # SWAGGER_URL: http://magjob-backend:8080/v3/api-docs
+      WAIT_TIME: 2
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/swagger.json
+
+  magjob-swagger-server:
+    image: swaggerapi/swagger-ui:latest
+    restart: always
+    ports:
+      - "6969:8080"
+    depends_on:
+      - magjob-swagger-server-handler
+    environment:
+      SWAGGER_JSON: /mnt/swagger.json
+    volumes:
+      - ./MagJob-swagger-server/swagger.json:/mnt/swagger.json
+
+  magjob-frontend:
+    image: magjob-frontend:0.0.1
+    restart: always
+    environment:
+      API_URL: http://magjob-backend:8080/api
+    ports:
+      - "8080:80"
+    depends_on:
+      - magjob-backend
+
+  keycloak:
+    container_name: keycloak
+    image: keepitup2023/magjob-keycloak:0.0.1
+    command: ['start', '--optimized', '--import-realm']
+    depends_on:
+      - "keycloak-db"
+    environment:
+      JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.upload_scripts=enabled
+      KC_DB_PASSWORD: admin
+      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
+      KC_DB_USERNAME: admin
+      KC_HEALTH_ENABLED: 'true'
+      KC_HTTP_ENABLED: 'true'
+      KC_METRICS_ENABLED: 'true'
+      KC_HOSTNAME_URL: http://localhost:8180
+      KC_PROXY: reencrypt
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8180:8080"
+      - "8787:8787" # debug port
+
+  keycloak-db:
+    image: postgres:15.5-bullseye
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./MagJob-test-data/keycloak-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=keycloak
+
+  db:
+    image: postgres:15.5-bullseye
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./MagJob-test-data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=postgres
+
+  pgadmin:
+    image: dpage/pgadmin4:2023-11-20-2
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./MagJob-test-data/pgadmin:/var/lib/pgadmin/data
+    depends_on:
+      - db
+      - keycloak-db
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./MagJob-backend/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - magjob-frontend
+
+  grafana:
+    image: grafana/grafana:10.2.1
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./MagJob-backend/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
