@@ -2,10 +2,6 @@
 
 MagJob is an application supporting work and communication in companies and organizations.
 
-![LoginPage](/screenshots/Login.png)
-![Organization Home Page](/screenshots/OrganizationHome.png)
-![Task with chat room](/screenshots/TaskDetails.png)
-
 **WARNING**  
 - Please be aware that certain features may be unavailable or incomplete during this phase.
 - Work is actively underway to finalize preliminary tasks and implement necessary security measures.
@@ -103,11 +99,10 @@ In pgAdmin do the following steps:
 - [x]   Creating an Organization
 - [x]   Inviting Members to the Organization
 - [x]   Member Management
-- [ ]   Tasks with Chat for specific Roles and Organization Members
-- [ ]   Roles in the Organization
-- [ ]   Chats between Members of a given Organization,
-- [ ]   Announcements with Notifications for specific Roles or the entire Organization
-- [ ]   Schedule based on the Availability hours received from the Organization's Members
+- [x]   Tasks with Chat for specific Roles and Organization Members
+- [x]   Roles in the Organization
+- [x]   Chats between Members of a given Organization
+- [x]   Announcements for Organization
 ## Authors
 
 - [@DamianLaczynski](https://github.com/DamianLaczynski) Team Leader, Product Owner, Frontend Developer
