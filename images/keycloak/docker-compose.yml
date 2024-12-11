@@ -48,7 +48,7 @@ services:
     networks:
       - local
     volumes:
-      - ./magjob-realm.json:/opt/keycloak/data/import/magjob-realm.json
+      - ./realm-export.json:/opt/keycloak/data/import/magjob-realm.json
 
 networks:
   local:
