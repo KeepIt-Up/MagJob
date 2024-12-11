@@ -42,43 +42,22 @@ services:
     environment:
       API_URL: http://magjob-backend:8080/api
     ports:
-      - "8080:80"
+      - "4200:80"
     depends_on:
       - magjob-backend
 
   keycloak:
-    container_name: keycloak
     image: keepitup2023/magjob-keycloak:latest
-    command: ['start', '--optimized', '--import-realm']
-    depends_on:
-      - "keycloak-db"
+    command: start-dev --import-realm
     environment:
-      JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.upload_scripts=enabled
-      KC_DB_PASSWORD: admin
-      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
-      KC_DB_USERNAME: admin
-      KC_HEALTH_ENABLED: 'true'
-      KC_HTTP_ENABLED: 'true'
-      KC_METRICS_ENABLED: 'true'
-      KC_HOSTNAME_URL: http://localhost:8180
-      KC_PROXY: reencrypt
+      KC_HEALTH_ENABLED: true
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "8180:8080"
-      - "8787:8787" # debug port
-
-  keycloak-db:
-    image: postgres:15.5-bullseye
-    restart: always
-    ports:
-      - "5433:5432"
     volumes:
-      - ./MagJob-test-data/keycloak-db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=keycloak
+      - ${APPDATA}/db/keycloak:/opt/keycloak/data
+      - ./images/keycloak/magjob-realm.json:/opt/keycloak/data/import/magjob-realm.json
 
   db:
     image: postgres:15.5-bullseye
@@ -104,7 +83,6 @@ services:
       - ./MagJob-test-data/pgadmin:/var/lib/pgadmin/data
     depends_on:
       - db
-      - keycloak-db
 
   prometheus:
     image: keepitup2023/magjob-prometheus:latest
@@ -112,8 +90,6 @@ services:
     restart: always
     ports:
       - "9090:9090"
-    volumes:
-      - ./MagJob-backend/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - magjob-frontend
 
@@ -123,7 +99,5 @@ services:
     restart: always
     ports:
       - "3000:3000"
-    volumes:
-      - ./MagJob-backend/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     depends_on:
       - prometheus
