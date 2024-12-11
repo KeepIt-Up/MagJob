@@ -13,13 +13,13 @@ services:
   magjob-swagger-server-handler:
     image: keepitup2023/magjob-swagger-server-handler:latest
     restart: always
-    # depends_on:
+    depends_on:
       # comment if you want to use locally launched API
-      # - magjob-backend
+      - magjob-backend
     environment:
       # change if you want to use locally launched API
-      SWAGGER_URL: http://host.docker.internal:8080/v3/api-docs
-      # SWAGGER_URL: http://magjob-backend:8080/v3/api-docs
+      # SWAGGER_URL: http://host.docker.internal:8080/v3/api-docs
+      SWAGGER_URL: http://magjob-backend:8080/v3/api-docs
       WAIT_TIME: 2
     volumes:
       - ./MagJob-swagger-server/swagger.json:/swagger.json
