@@ -9,6 +9,8 @@ services:
       - keycloak
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://keycloak:8080/realms/master
+      - SERVER-URL=http://keycloak:8080
 
   magjob-swagger-server-handler:
     image: keepitup2023/magjob-swagger-server-handler:latest
@@ -48,7 +50,7 @@ services:
 
   keycloak:
     image: keepitup2023/magjob-keycloak:latest
-    command: start-dev --import-realm
+    command: start-dev --import-realm -b=0.0.0.0
     environment:
       KC_HEALTH_ENABLED: true
       KEYCLOAK_ADMIN: admin
