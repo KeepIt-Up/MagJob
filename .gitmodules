@@ -1,6 +1,3 @@
-[submodule "MagJob-test-data"]
-	path = MagJob-test-data
-	url = https://github.com/KeepIt-Up/MagJob-test-data
 [submodule "MagJob-backend"]
 	path = MagJob-backend
 	url = https://github.com/KeepIt-Up/MagJob-backend

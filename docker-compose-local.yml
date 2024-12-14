@@ -41,7 +41,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./MagJob-test-data/db:/var/lib/postgresql/data
+      - ${APPDATA}/db/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
@@ -82,7 +82,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
-      - ./MagJob-test-data/pgadmin:/var/lib/pgadmin/data
+      - .${APPDATA}/db/pgadmin:/var/lib/pgadmin/data
     depends_on:
       - db
 
