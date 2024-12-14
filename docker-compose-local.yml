@@ -5,12 +5,47 @@ services:
     image: keepitup2023/magjob-backend:latest
     restart: always
     depends_on:
-      - pgadmin
       - keycloak
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://keycloak:8080/realms/master
       - SERVER-URL=http://keycloak:8080
+
+  magjob-frontend:
+    image: keepitup2023/magjob-frontend:latest
+    restart: always
+    environment:
+      API_URL: http://magjob-backend:8080/api
+      KEYCLOAK_URL: http://keycloak:8080/realms
+    ports:
+      - "4200:80"
+    depends_on:
+      - magjob-backend
+
+  keycloak:
+    image: keepitup2023/magjob-keycloak:latest
+    command: start-dev --import-realm
+    environment:
+      KC_HEALTH_ENABLED: true
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${APPDATA}/db/keycloak:/opt/keycloak/data
+      - ./images/keycloak/magjob-realm.json:/opt/keycloak/data/import/magjob-realm.json
+
+  db:
+    image: postgres:15.5-bullseye
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./MagJob-test-data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=postgres
 
   magjob-swagger-server-handler:
     image: keepitup2023/magjob-swagger-server-handler:latest
@@ -37,41 +72,6 @@ services:
       SWAGGER_JSON: /mnt/swagger.json
     volumes:
       - ./MagJob-swagger-server/swagger.json:/mnt/swagger.json
-
-  magjob-frontend:
-    image: keepitup2023/magjob-frontend:latest
-    restart: always
-    environment:
-      API_URL: http://magjob-backend:8080/api
-    ports:
-      - "4200:80"
-    depends_on:
-      - magjob-backend
-
-  keycloak:
-    image: keepitup2023/magjob-keycloak:latest
-    command: start-dev --import-realm -b=0.0.0.0
-    environment:
-      KC_HEALTH_ENABLED: true
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    ports:
-      - "8180:8080"
-    volumes:
-      - ${APPDATA}/db/keycloak:/opt/keycloak/data
-      - ./images/keycloak/magjob-realm.json:/opt/keycloak/data/import/magjob-realm.json
-
-  db:
-    image: postgres:15.5-bullseye
-    restart: always
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./MagJob-test-data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=postgres
 
   pgadmin:
     image: dpage/pgadmin4:2023-11-20-2
